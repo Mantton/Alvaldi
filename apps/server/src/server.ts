@@ -1,8 +1,12 @@
 import app from "./app";
 import { PORT } from "./config/env";
+import { runMigrations } from "./db/migrate";
 
-const server = app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+async function runServer() {
+  await runMigrations();
+  app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
+}
 
-export default server;
+export default runServer;
