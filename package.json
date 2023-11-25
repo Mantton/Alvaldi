@@ -1,9 +1,9 @@
 {
-  "name": "ktrader",
+  "name": "alvaldi",
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "server": "pnpm --filter @ktrader/server"
+    "server": "pnpm --filter @alvaldi/server"
   },
   "keywords": [],
   "author": "Mantton <mantton.official@gmail.com>",
