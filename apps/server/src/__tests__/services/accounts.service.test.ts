@@ -4,6 +4,7 @@ import { accounts } from "@/db/schema/accounts";
 import { eq } from "drizzle-orm";
 import { runMigrations } from "@/db/migrate";
 import { resetPostgresDatabase } from "@/utils/postgres";
+import { DEFAULT_USER_POINTS } from "@/config/constants";
 
 describe("Accounts Service Tests", () => {
   beforeAll(async () => {
@@ -30,6 +31,7 @@ describe("Accounts Service Tests", () => {
       expect(user.id).toBe(1);
       expect(user.providerId).toBe(id);
       expect(user.handle).toBe("collector1");
+      expect(user.points).toBe(DEFAULT_USER_POINTS);
     });
   });
 });

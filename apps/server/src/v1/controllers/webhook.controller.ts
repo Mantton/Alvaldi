@@ -1,7 +1,7 @@
 import type { WebhookEvent } from "@clerk/clerk-sdk-node";
 import type { RequestHandler } from "express";
 import { Webhook } from "svix";
-import { SVIXWebhookHeadersSchema } from "@/zod/svix";
+import { SVIXWebhookHeadersSchema } from "@/schemas/svix";
 import { CLERK_WEBHOOK_SECRET } from "@/config/env";
 import { didReceiveClerkEvent } from "../services/webhook.service";
 
