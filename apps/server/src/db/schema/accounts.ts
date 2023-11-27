@@ -12,7 +12,7 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 
-export const accounts = pgTable(
+export const accountsTable = pgTable(
   "accounts",
   {
     id: serial("id").primaryKey(),

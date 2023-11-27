@@ -20,12 +20,8 @@ export const handleGetAuthenticatedUser: RequestHandler = async (
     // get account record
     const account = await getAccountWithProviderID(providerId);
 
-    // if no account, user is authenticated so clerk user exists, create record
     if (!account) {
-      await createAccountFromClerk(providerId); // create with clerk
-      const account = await getAccountWithProviderID(providerId); // get from db
-      if (!account) throw new Error("provider-local user mismatch"); // if acc dne, throw new error
-      res.json(account); // respond with account record
+      if (!account) throw new Error("provider-local user mismatch"); // user exists in clerk but not in db.
       return;
     }
 
