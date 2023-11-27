@@ -1,6 +1,6 @@
 {
-  "id": "c64df040-82ce-4a31-94fc-bc13696fb19d",
-  "prevId": "1dceb21d-9ae4-47d6-ab0b-530629955030",
+  "id": "719296cf-aafb-402a-93ab-c7484bbbd7b6",
+  "prevId": "1a6617a5-817c-4652-b0ef-111d91868431",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -29,7 +29,7 @@
         },
         "handle": {
           "name": "handle",
-          "type": "varchar(15)",
+          "type": "varchar(36)",
           "primaryKey": false,
           "notNull": true
         },
@@ -47,7 +47,15 @@
           "notNull": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "handle_unique_index": {
+          "name": "handle_unique_index",
+          "columns": [
+            "handle"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
@@ -56,13 +64,6 @@
           "nullsNotDistinct": false,
           "columns": [
             "provider_id"
-          ]
-        },
-        "accounts_handle_unique": {
-          "name": "accounts_handle_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "handle"
           ]
         }
       }

@@ -3,6 +3,8 @@ import "dotenv/config";
 export const PORT = process.env.PORT ?? "3300";
 export const DATABASE_URL = getEnvVar("DATABASE_URL");
 export const ENVIRONMENT = process.env.NODE_ENV;
+export const CLERK_WEBHOOK_SECRET = getEnvVar("CLERK_WEBHOOK_SECRET");
+
 export const isProduction = () => !!ENVIRONMENT && ENVIRONMENT === "production";
 function getEnvVar(key: string) {
   const value = process.env[key];

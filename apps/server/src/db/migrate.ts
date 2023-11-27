@@ -7,7 +7,7 @@ import postgres from "postgres";
 
 export async function runMigrations() {
   await migrate(drizzle(postgres(DATABASE_URL, { max: 1 })), {
-    migrationsFolder: "db/migrations",
+    migrationsFolder: "db/migrations/",
   });
   console.log("Migration Complete");
 }

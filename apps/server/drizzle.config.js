@@ -11,6 +11,6 @@ export default {
   },
 
   // Push
-  verbose: true,
-  strict: true,
+  verbose: false,
+  strict: false,
 };
