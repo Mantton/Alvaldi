@@ -7,7 +7,7 @@ import db from "@/clients/postgres";
 import { accountsTable } from "@/db/schema/accounts";
 import { eq } from "drizzle-orm";
 import { runMigrations } from "@/db/migrate";
-import { resetPostgresDatabase } from "@/utils/postgres";
+import { resetPostgresDatabase } from "@/__tests__/utils/postgres";
 import { DEFAULT_USER_POINTS } from "@/config/constants";
 
 describe("Accounts Service Tests", () => {

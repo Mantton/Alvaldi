@@ -83,7 +83,7 @@ export const isAdministratorByProvider = async (providerId: string) => {
  * @returns a boolean indicating if a user is an administrator
  */
 export const isAdministratorSerialID = async (id: number) => {
-  const [user] = await db
+  const user = await db
     .select()
     .from(adminsTable)
     .where(eq(adminsTable.accountId, id));

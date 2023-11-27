@@ -1,19 +1,16 @@
-import { RequestHandler } from "express";
-import {
-  createAccountFromClerk,
-  getAccountWithProviderID,
-} from "../services/accounts.service";
+import type { RequestHandler } from "express";
+import type { BasicAccountInfo } from "@/types/accounts";
+import { getAccountWithProviderID } from "../services/accounts.service";
 
 /**
  * Handles request to get current authenticated user.
  *
  * ! Must be wrapped with `RequiresAuth` middleware
  */
-export const handleGetAuthenticatedUser: RequestHandler = async (
-  req,
-  res,
-  next
-) => {
+export const handleGetAuthenticatedUser: RequestHandler<
+  any,
+  BasicAccountInfo
+> = async (req, res, next) => {
   const providerId = req.auth.userId!; // Force unwrap as middleware requires authentication
 
   try {

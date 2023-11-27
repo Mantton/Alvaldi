@@ -14,6 +14,9 @@ importers:
 
   apps/server:
     dependencies:
+      '@alvaldi/common':
+        specifier: workspace:*
+        version: link:../../packages/common
       '@clerk/clerk-sdk-node':
         specifier: ^4.12.22
         version: 4.12.22(react@18.2.0)
@@ -84,6 +87,16 @@ importers:
       ts-jest:
         specifier: ^29.1.1
         version: 29.1.1(@babel/core@7.23.3)(esbuild@0.18.20)(jest@29.7.0)(typescript@5.3.2)
+      typescript:
+        specifier: ^5.3.2
+        version: 5.3.2
+
+  packages/common:
+    dependencies:
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
+    devDependencies:
       typescript:
         specifier: ^5.3.2
         version: 5.3.2

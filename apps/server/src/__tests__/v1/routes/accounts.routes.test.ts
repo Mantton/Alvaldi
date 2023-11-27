@@ -1,11 +1,11 @@
 import { TEST_USER_1 } from "@/__tests__/utils/users";
 import app from "@/app";
 import { runMigrations } from "@/db/migrate";
-import { resetPostgresDatabase } from "@/utils/postgres";
+import { resetPostgresDatabase } from "@/__tests__/utils/postgres";
 import { createAccount } from "@/v1/services/accounts.service";
 import supertest from "supertest";
 
-describe("Basic App Tests", () => {
+describe("Account Routes", () => {
   beforeAll(async () => {
     // drop All
     await resetPostgresDatabase();
@@ -22,10 +22,10 @@ describe("Basic App Tests", () => {
 
   describe("GET /v1/accounts/me", () => {
     it("should respond with a `200` status code & an account json", async () => {
-      await createAccount("user_2YkKmZL9FA64GaHlZsBahbTiPHm");
+      await createAccount(TEST_USER_1.id);
       const { status, body } = await supertest(app)
         .get("/v1/accounts/me")
-        .set("Authorization", `Bearer ${TEST_USER_1}`);
+        .set("Authorization", `Bearer ${TEST_USER_1.token}`);
 
       expect(status).toBe(200);
       expect(body.points).toBe(1000);

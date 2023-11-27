@@ -5,5 +5,7 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 
 // Queries
-const db = drizzle(postgres(DATABASE_URL));
+const pg = postgres(DATABASE_URL, { onnotice: (_) => {} });
+
+const db = drizzle(pg);
 export default db;

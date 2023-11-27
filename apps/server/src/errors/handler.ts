@@ -1,13 +1,11 @@
 import { ErrorRequestHandler } from "express";
 import { ZodError } from "zod";
-import { APIError } from "../errors";
+import { APIError, UnauthorizedRequestError } from "../errors";
 export const APIErrorHandler: ErrorRequestHandler = (err, _, res, next) => {
   if (res.headersSent) {
     next(err);
     return;
   }
-
-  // console.error(err.message);
 
   if (err instanceof ZodError) {
     res.sendStatus(400);
@@ -15,13 +13,17 @@ export const APIErrorHandler: ErrorRequestHandler = (err, _, res, next) => {
   } else if (err instanceof APIError) {
     res.sendStatus(err.code);
     return;
+  } else if (err instanceof UnauthorizedRequestError) {
+    res.sendStatus(401);
   } else if (err instanceof Error) {
+    // clerk
     if (err.message.toLowerCase() === "unauthenticated") {
-      // clerk
       res.sendStatus(401);
       return;
     }
   }
+
+  console.error(err);
 
   res.sendStatus(500);
   return;
