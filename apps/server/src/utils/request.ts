@@ -1,3 +1,4 @@
+import cache from "@/clients/cache";
 import db from "@/clients/postgres";
 import { accountsTable } from "@/db/schema/accounts";
 import { UnauthorizedRequestError } from "@/errors";
@@ -7,11 +8,16 @@ import type { Request } from "express";
 export const getAuthenticatedUser = async (request: Request) => {
   const providerId = request.auth.userId;
 
-  // if no provider on request & the request REQUIRES an authenticated user, throw Unauthorized
+  // if no provider on request throw Unauthorized
   if (!providerId) throw new UnauthorizedRequestError();
-  // TODO: Check Cache First
-  // Check DB
+  // Check Cache
+  const cacheId = await cache.getGrouped("account", providerId);
+  if (cacheId) {
+    const accID = parseInt(cacheId);
+    return accID;
+  }
 
+  // Check DB
   const users = await db
     .select({ id: accountsTable.id })
     .from(accountsTable)
@@ -19,5 +25,7 @@ export const getAuthenticatedUser = async (request: Request) => {
 
   if (!users.length) throw new UnauthorizedRequestError();
 
-  return users?.[0].id;
+  const id = users?.[0].id;
+  await cache.setGrouped("account", providerId, id.toString());
+  return id;
 };

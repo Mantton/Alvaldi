@@ -1,0 +1,1 @@
+ALTER TABLE "media" ALTER COLUMN "url" SET DATA TYPE varchar;

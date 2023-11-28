@@ -2,6 +2,7 @@ import s3 from "@/clients/s3";
 import { PutObjectRequest } from "aws-sdk/clients/s3";
 import { v4 as uuidv4 } from "uuid";
 import { extname } from "path";
+import { nanoid } from "nanoid";
 import {
   AWS_BUCKET_NAME,
   AWS_CLOUDFRONT_DOMAIN,
@@ -9,6 +10,7 @@ import {
 } from "@/config/env";
 import db from "@/clients/postgres";
 import { mediaTable } from "@/db/schema/media";
+import cache from "@/clients/cache";
 
 const FOLDER = isProduction() ? "media" : "test";
 
@@ -42,5 +44,10 @@ export const storeMedia = async (
       uploaderId,
     })
     .returning({ id: mediaTable.id });
-  return record;
+
+  const serialId = record.id;
+  const nanoId = nanoid();
+
+  await cache.setGrouped("media", nanoId, serialId.toString(), 120); // 2 Minutes Expiry
+  return { id: nanoId };
 };
