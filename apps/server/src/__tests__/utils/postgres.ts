@@ -4,7 +4,6 @@ import { sql } from "drizzle-orm";
 
 export async function resetPostgresDatabase() {
   if (isProduction()) {
-    console.log("RESET CALLED ON PRODUCTION DATABASE");
     return;
   }
   // The TRUNCATE SQL command can be used to delete all data from tables in the current schema

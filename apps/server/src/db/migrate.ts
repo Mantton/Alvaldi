@@ -11,5 +11,5 @@ export async function runMigrations() {
   await migrate(drizzle(pg), {
     migrationsFolder: "db/migrations/",
   });
-  console.log("Migration Complete");
+  console.log("[POSTGRES] Migration Complete");
 }
