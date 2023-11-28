@@ -13,8 +13,6 @@ export const APIErrorHandler: ErrorRequestHandler = (err, _, res, next) => {
   } else if (err instanceof APIError) {
     res.sendStatus(err.code);
     return;
-  } else if (err instanceof UnauthorizedRequestError) {
-    res.sendStatus(401);
   } else if (err instanceof Error) {
     // clerk
     if (err.message.toLowerCase() === "unauthenticated") {

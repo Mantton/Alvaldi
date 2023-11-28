@@ -36,16 +36,6 @@ export class ContentViolationError extends APIError {
 }
 
 /**
- * The requested username is already in use
- */
-export class UsernameTakenError extends APIError {
-  constructor() {
-    super("the username requested is currently taken");
-    this.name = "UsernameTakenError";
-  }
-}
-
-/**
  * The requested resource/record does not exist
  */
 export class RecordNotFoundError extends APIError {
@@ -53,5 +43,13 @@ export class RecordNotFoundError extends APIError {
     super("not found");
     this.name = "Not Found";
     this.code = 404;
+  }
+}
+
+export class BadRequestError extends APIError {
+  constructor() {
+    super("bad request");
+    this.name = "Bad Request";
+    this.code = 400;
   }
 }

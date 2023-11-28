@@ -11,7 +11,7 @@ export const recordLabelsTable = pgTable("record_labels", {
   id: serial("id").primaryKey(),
   dateAdded: timestamp("date_added").defaultNow().notNull(),
   name: varchar("name", { length: 120 }).notNull().unique(),
-  addedBy: integer("added_by")
+  creatorId: integer("creator_id")
     .references(() => accountsTable.id)
     .notNull(),
 });

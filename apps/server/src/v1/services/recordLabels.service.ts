@@ -3,13 +3,13 @@ import { recordLabelsTable } from "@/db/schema/recordLabels";
 
 /**
  * Adds a new Record label Record to the database
- * @param creatorID Serial ID of the use creating this record
+ * @param creatorId Serial ID of the use creating this record
  * @param name The name of the record
  * @param imageID the nano id of the image
  * @returns
  */
 export const createRecordLabel = async (
-  creatorID: number,
+  creatorId: number,
   name: string,
   imageID?: string
 ) => {
@@ -17,7 +17,7 @@ export const createRecordLabel = async (
     .insert(recordLabelsTable)
     .values({
       name,
-      addedBy: creatorID,
+      creatorId: creatorId,
     })
     .returning({ id: recordLabelsTable.id, name: recordLabelsTable.name });
 

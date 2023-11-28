@@ -5,3 +5,10 @@ export type CreateRecordLabelResponse = {
     name: string;
   };
 };
+
+export type UploadMediaResponse = {
+  success: true;
+  data: {
+    id: number;
+  };
+};
