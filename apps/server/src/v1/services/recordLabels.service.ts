@@ -1,5 +1,6 @@
 import db from "@/clients/postgres";
 import { recordLabelsTable } from "@/db/schema/recordLabels";
+import { consumeImageNano } from "./media.service";
 
 /**
  * Adds a new Record label Record to the database
@@ -11,13 +12,26 @@ import { recordLabelsTable } from "@/db/schema/recordLabels";
 export const createRecordLabel = async (
   creatorId: number,
   name: string,
-  imageID?: string
+  iconImage?: string,
+  bannerImage?: string
 ) => {
+  let iconId: null | number = null;
+  let bannerId: null | number = null;
+
+  // Get Image ID's from db
+  if (iconImage) {
+    iconId = await consumeImageNano(iconImage);
+  }
+  if (bannerImage) {
+    bannerId = await consumeImageNano(bannerImage);
+  }
   const [record] = await db
     .insert(recordLabelsTable)
     .values({
       name,
       creatorId: creatorId,
+      iconImageId: iconId,
+      bannerImageId: bannerId,
     })
     .returning({ id: recordLabelsTable.id, name: recordLabelsTable.name });
 

@@ -11,9 +11,15 @@ import {
 import db from "@/clients/postgres";
 import { mediaTable } from "@/db/schema/media";
 import cache from "@/clients/cache";
+import { BadRequestError } from "@/errors";
 
 const FOLDER = isProduction() ? "media" : "test";
 
+/**
+ * Uploads a specified file to S3
+ * @param file A File uploaded by a user
+ * @returns the URL of the file in S3 (through cloudfront)
+ */
 const uploadToS3 = async (file: Express.Multer.File) => {
   const name = uuidv4();
   const extension = extname(file.originalname);
@@ -31,6 +37,12 @@ const uploadToS3 = async (file: Express.Multer.File) => {
   return mediaURL;
 };
 
+/**
+ * stores a file in the db & on S3
+ * @param file File to be uploaded
+ * @param uploaderId ID of the user uploading
+ * @returns a nanoID of the file uploaded
+ */
 export const storeMedia = async (
   file: Express.Multer.File,
   uploaderId: number
@@ -50,4 +62,14 @@ export const storeMedia = async (
 
   await cache.setGrouped("media", nanoId, serialId.toString(), 120); // 2 Minutes Expiry
   return { id: nanoId };
+};
+
+export const consumeImageNano = async (nanoId: string) => {
+  const idStr = await cache.getGrouped("media", nanoId);
+  if (!idStr) return null;
+  const id = parseInt(idStr);
+
+  await cache.deleteGrouped("media", nanoId); // consume
+
+  return id;
 };

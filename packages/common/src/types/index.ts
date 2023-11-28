@@ -9,6 +9,6 @@ export type CreateRecordLabelResponse = {
 export type UploadMediaResponse = {
   success: true;
   data: {
-    id: number;
+    id: string;
   };
 };

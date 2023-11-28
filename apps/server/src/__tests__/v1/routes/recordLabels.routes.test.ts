@@ -4,11 +4,13 @@ import { runMigrations } from "@/db/migrate";
 import { resetPostgresDatabase } from "@/__tests__/utils/postgres";
 import type { CreateRecordLabelResponse } from "@alvaldi/common";
 import supertest from "supertest";
+import cache from "@/clients/cache";
 
 describe("Record Label Routes", () => {
   beforeAll(async () => {
     // drop All
     await resetPostgresDatabase();
+    await cache.connect();
   });
 
   beforeEach(async () => {
@@ -73,6 +75,20 @@ describe("Record Label Routes", () => {
           name: "YG 엔터테인먼트",
         })
         .expect(400);
+    });
+
+    it("should respond with `200` whilst creating a label with an icon image", async () => {
+      await createTestUser();
+      const { body } = await supertest(app)
+        .post("/v1/media/upload")
+        .set("Authorization", `Bearer ${TEST_USER_1.token}`)
+        .attach("media", "./src/__tests__/assets/asset.jpeg")
+        .expect(201);
+
+      await supertest(app)
+        .put("/v1/labels")
+        .set("Authorization", `Bearer ${TEST_USER_1.token}`)
+        .send({ name: "YG Entertainment", icon: body.id });
     });
   });
 });

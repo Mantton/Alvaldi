@@ -35,6 +35,15 @@ class Cache {
     const p = `${group}::${key}`;
     return this.set(p, value, seconds);
   }
+
+  delete(key: string) {
+    return this.client.del(key);
+  }
+
+  deleteGrouped(group: string, key: string) {
+    const p = `${group}::${key}`;
+    return this.delete(p);
+  }
 }
 
 const cache = new Cache();

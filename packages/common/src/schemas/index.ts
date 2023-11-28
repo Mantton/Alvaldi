@@ -7,4 +7,7 @@ export const CreateRecordLabelRequestSchema = z.object({
     .trim()
     .min(3)
     .max(40),
+
+  icon: z.string().length(21).optional(),
+  banner: z.string().length(21).optional(),
 });

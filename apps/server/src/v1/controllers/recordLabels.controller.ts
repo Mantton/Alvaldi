@@ -21,9 +21,9 @@ export const handleCreateRecordLabel: HandleCreateRecordLabelRequest = async (
   try {
     req;
     const userID = await getAuthenticatedUser(req);
-    const { name } = req.body;
+    const { name, icon, banner } = req.body;
 
-    const data = await createRecordLabel(userID, name);
+    const data = await createRecordLabel(userID, name, icon, banner);
     res.status(201).json({
       success: true,
       data,
