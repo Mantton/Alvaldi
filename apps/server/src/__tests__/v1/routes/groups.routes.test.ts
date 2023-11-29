@@ -1,37 +1,26 @@
 import { TEST_USER_1, createDefaultUser } from "@/__tests__/utils/users";
 import app from "@/app";
-import { runMigrations } from "@/db/migrate";
-import { resetPostgresDatabase } from "@/__tests__/utils/postgres";
 import supertest from "supertest";
-import cache from "@/clients/cache";
 import { createRecordLabel } from "@/v1/services/recordLabels.service";
 
-const data: CreateGroupRequest = {
-  label: 1,
-  name: "BLACKPINK",
-};
-
 import { createArtistRecord } from "@/v1/services/artists.service";
-import { CreateGroupRequest } from "@alvaldi/common";
 import { getGroupInfo } from "@/v1/services/groups.service";
+import { CreateGroupRequest } from "@alvaldi/common";
 
 describe("Groups Routes", () => {
   beforeAll(async () => {
-    // drop All
-    await cache.connect();
-    await resetPostgresDatabase();
-    await runMigrations();
     await createDefaultUser(); // create user
     await createRecordLabel(1, "YG Entertainment"); // create label
     await createArtistRecord({ stageName: "Lisa", label: 1 }, 1);
     await createArtistRecord({ stageName: "Rosé", label: 1 }, 1);
-  }, 20000);
-
-  afterAll(async () => {
-    await cache.disconnect();
   });
 
   describe("PUT /v1/groups", () => {
+    const data: CreateGroupRequest = {
+      label: 1,
+      name: "BLACKPINK",
+    };
+
     it("[Groups] should respond with a `401` status", async () => {
       await supertest(app).put("/v1/groups").expect(401);
     });

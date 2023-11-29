@@ -11,7 +11,6 @@ import {
 import db from "@/clients/postgres";
 import { mediaTable } from "@/db/schema/media";
 import cache from "@/clients/cache";
-import { BadRequestError } from "@/errors";
 
 const FOLDER = isProduction() ? "media" : "test";
 

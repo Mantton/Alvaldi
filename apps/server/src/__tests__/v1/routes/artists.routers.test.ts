@@ -1,34 +1,13 @@
 import { TEST_USER_1, createDefaultUser } from "@/__tests__/utils/users";
 import app from "@/app";
-import { runMigrations } from "@/db/migrate";
 import { resetPostgresDatabase } from "@/__tests__/utils/postgres";
-import { createAccount } from "@/v1/services/accounts.service";
 import supertest from "supertest";
-import cache from "@/clients/cache";
 import { createRecordLabel } from "@/v1/services/recordLabels.service";
 import { z } from "zod";
-import {
-  CreateArtistRequestSchema,
-  CreateArtistResponse,
-} from "@alvaldi/common";
+import { CreateArtistRequestSchema } from "@alvaldi/common";
 import { getArtistWithID } from "@/v1/services/artists.service";
 
 describe("Artists Routes", () => {
-  beforeAll(async () => {
-    // drop All
-    await resetPostgresDatabase();
-    await cache.connect();
-  });
-
-  afterAll(async () => {
-    await cache.disconnect();
-  });
-
-  beforeEach(async () => {
-    // recreate All
-    await runMigrations();
-  });
-
   afterEach(async () => {
     await resetPostgresDatabase();
   });

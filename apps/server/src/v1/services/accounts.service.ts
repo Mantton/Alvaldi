@@ -67,14 +67,13 @@ export const getAccountWithProviderID = async (
  * @returns a boolean indicating if the user is an administrator
  */
 export const isAdministratorByProvider = async (providerId: string) => {
-  const [user] = await db
+  const records = await db
     .select({ id: accountsTable.id })
-    .from(adminsTable)
-    .leftJoin(accountsTable, eq(accountsTable.id, adminsTable.accountId))
+    .from(accountsTable)
+    .rightJoin(adminsTable, eq(adminsTable.accountId, accountsTable.id))
     .where(eq(accountsTable.providerId, providerId));
 
-  if (!user || !user.id) return false;
-  return true;
+  return !!records.length;
 };
 
 /**
@@ -83,7 +82,7 @@ export const isAdministratorByProvider = async (providerId: string) => {
  * @returns a boolean indicating if a user is an administrator
  */
 export const isAdministratorSerialID = async (id: number) => {
-  const user = await db
+  const [user] = await db
     .select()
     .from(adminsTable)
     .where(eq(adminsTable.accountId, id));

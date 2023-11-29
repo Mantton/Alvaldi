@@ -13,40 +13,52 @@ class Cache {
     });
   }
 
-  connect() {
+  async connect() {
     if (this.client.isOpen) return;
-    return this.client.connect();
+    await this.client.connect();
+    return;
   }
 
   disconnect() {
     return this.client.disconnect();
   }
 
-  get(key: string) {
+  async get(key: string) {
+    await this.connect();
     return this.client.get(key);
   }
 
-  set(key: string, value: string, seconds?: number) {
+  async set(key: string, value: string, seconds?: number) {
     if (!seconds) return this.client.set(key, value);
+    await this.connect();
     return this.client.setEx(key, seconds, value);
   }
 
-  getGrouped(group: string, key: string) {
+  async getGrouped(group: string, key: string) {
     const p = `${group}::${key}`;
+    await this.connect();
     return this.get(p);
   }
 
-  setGrouped(group: string, key: string, value: string, seconds?: number) {
+  async setGrouped(
+    group: string,
+    key: string,
+    value: string,
+    seconds?: number
+  ) {
     const p = `${group}::${key}`;
+    await this.connect();
     return this.set(p, value, seconds);
   }
 
-  delete(key: string) {
+  async delete(key: string) {
+    await this.connect();
     return this.client.del(key);
   }
 
-  deleteGrouped(group: string, key: string) {
+  async deleteGrouped(group: string, key: string) {
     const p = `${group}::${key}`;
+    await this.connect();
     return this.delete(p);
   }
 }

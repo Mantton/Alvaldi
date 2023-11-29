@@ -1,21 +1,10 @@
 import { TEST_USER_1 } from "@/__tests__/utils/users";
 import app from "@/app";
-import { runMigrations } from "@/db/migrate";
 import { resetPostgresDatabase } from "@/__tests__/utils/postgres";
 import { createAccount } from "@/v1/services/accounts.service";
 import supertest from "supertest";
 
 describe("Account Routes", () => {
-  beforeAll(async () => {
-    // drop All
-    await resetPostgresDatabase();
-  });
-
-  beforeEach(async () => {
-    // recreate All
-    await runMigrations();
-  });
-
   afterEach(async () => {
     await resetPostgresDatabase();
   });

@@ -1,26 +1,14 @@
 import { TEST_USER_1, createDefaultUser } from "@/__tests__/utils/users";
 import app from "@/app";
-import { runMigrations } from "@/db/migrate";
 import { resetPostgresDatabase } from "@/__tests__/utils/postgres";
 import type { CreateRecordLabelResponse } from "@alvaldi/common";
 import supertest from "supertest";
-import cache from "@/clients/cache";
 
 describe("Record Label Routes", () => {
-  beforeAll(async () => {
-    // drop All
-    await resetPostgresDatabase();
-    await cache.connect();
-  });
-
-  beforeEach(async () => {
-    // recreate All
-    await runMigrations();
-  });
-
   afterEach(async () => {
     await resetPostgresDatabase();
   });
+
   describe("PUT /v1/labels", () => {
     it("should respond with  `201` created & a json containing the id of the newly created record label", async () => {
       await createDefaultUser();
