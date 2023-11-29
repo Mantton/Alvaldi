@@ -16,7 +16,7 @@ export const handleFileUpload: RequestHandler<
     }
 
     const data = await storeMedia(file, userId);
-    res.status(201).json({ success: true, data });
+    res.status(201).json(data);
   } catch (err) {
     next(err);
   }

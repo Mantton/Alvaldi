@@ -24,10 +24,7 @@ export const handleCreateRecordLabel: HandleCreateRecordLabelRequest = async (
     const { name, icon, banner } = req.body;
 
     const data = await createRecordLabel(userID, name, icon, banner);
-    res.status(201).json({
-      success: true,
-      data,
-    });
+    res.status(201).json(data);
   } catch (error) {
     next(error);
   }

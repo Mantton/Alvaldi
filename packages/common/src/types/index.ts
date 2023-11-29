@@ -1,14 +1,19 @@
 export type CreateRecordLabelResponse = {
-  success: true;
-  data: {
-    id: number;
-    name: string;
-  };
+  id: number;
+  name: string;
 };
 
 export type UploadMediaResponse = {
-  success: true;
-  data: {
-    id: string;
-  };
+  id: string;
+};
+
+export type CreateArtistResponse = {
+  id: number;
+};
+
+export type BasicArtistInfo = {
+  id: number;
+  stageName: string;
+  iconImageUrl: string | null;
+  bannerImageUrl: string | null;
 };

@@ -22,8 +22,8 @@ describe("Media Routes", () => {
     await resetPostgresDatabase();
   });
 
-  describe("PUT /v1/media/upload", () => {
-    it("should respond with a `200` status code & a nanoid of the image to be sent in consequent requests", async () => {
+  describe("POST /v1/media/upload", () => {
+    it("should respond with a `201` status code & a nanoid of the image to be sent in consequent requests", async () => {
       await createAccount(TEST_USER_1.id);
       await supertest(app)
         .post("/v1/media/upload")

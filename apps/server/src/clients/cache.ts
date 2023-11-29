@@ -14,7 +14,12 @@ class Cache {
   }
 
   connect() {
+    if (this.client.isOpen) return;
     return this.client.connect();
+  }
+
+  disconnect() {
+    return this.client.disconnect();
   }
 
   get(key: string) {

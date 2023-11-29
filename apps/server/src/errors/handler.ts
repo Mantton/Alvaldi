@@ -1,6 +1,6 @@
 import { ErrorRequestHandler } from "express";
 import { ZodError } from "zod";
-import { APIError, UnauthorizedRequestError } from "../errors";
+import { APIError } from "../errors";
 export const APIErrorHandler: ErrorRequestHandler = (err, _, res, next) => {
   if (res.headersSent) {
     next(err);

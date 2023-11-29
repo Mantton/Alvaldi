@@ -3,7 +3,6 @@ import { accountsTable } from "@/db/schema/accounts";
 import { BasicAccountInfo } from "@/types/accounts";
 import { eq } from "drizzle-orm";
 import { v4 as uuidv4 } from "uuid";
-import { clerkClient } from "@clerk/clerk-sdk-node";
 import { adminsTable } from "@/db/schema/admins";
 /**
  * creates a new user from a clerk user.
@@ -33,6 +32,7 @@ export const createAccount = async (providerId: string) => {
 
   // make first user admin
   if (id === 1) await setAccountAsAdministrator(id);
+  return id;
 };
 
 /**

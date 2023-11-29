@@ -8,7 +8,6 @@ export const BodyMatchesSchema = (schema: AnyZodObject) => {
       req.body = data;
       next();
     } catch (err) {
-      console.log(err);
       next(err);
     }
   };

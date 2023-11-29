@@ -1,4 +1,4 @@
-import { TEST_USER_1, createTestUser } from "@/__tests__/utils/users";
+import { TEST_USER_1, createDefaultUser } from "@/__tests__/utils/users";
 import app from "@/app";
 import { runMigrations } from "@/db/migrate";
 import { resetPostgresDatabase } from "@/__tests__/utils/postgres";
@@ -23,7 +23,7 @@ describe("Record Label Routes", () => {
   });
   describe("PUT /v1/labels", () => {
     it("should respond with  `201` created & a json containing the id of the newly created record label", async () => {
-      await createTestUser();
+      await createDefaultUser();
       await supertest(app)
         .put("/v1/labels")
         .set("Authorization", `Bearer ${TEST_USER_1.token}`)
@@ -31,8 +31,8 @@ describe("Record Label Routes", () => {
         .expect(201)
         .expect((res) => {
           const body: CreateRecordLabelResponse = res.body;
-          expect(body.data.id).toBe(1);
-          expect(body.data.name).toBe("YG Entertainment");
+          expect(body.id).toBe(1);
+          expect(body.name).toBe("YG Entertainment");
         });
     });
 
@@ -44,7 +44,7 @@ describe("Record Label Routes", () => {
     });
 
     it("should respond with `400` bad request", async () => {
-      await createTestUser();
+      await createDefaultUser();
 
       await supertest(app)
         .put("/v1/labels")
@@ -54,7 +54,7 @@ describe("Record Label Routes", () => {
     });
 
     it("should respond with `400` bad request", async () => {
-      await createTestUser();
+      await createDefaultUser();
 
       await supertest(app)
         .put("/v1/labels")
@@ -66,7 +66,7 @@ describe("Record Label Routes", () => {
     });
 
     it("should respond with `400` bad request", async () => {
-      await createTestUser();
+      await createDefaultUser();
 
       await supertest(app)
         .put("/v1/labels")
@@ -78,7 +78,7 @@ describe("Record Label Routes", () => {
     });
 
     it("should respond with `200` whilst creating a label with an icon image", async () => {
-      await createTestUser();
+      await createDefaultUser();
       const { body } = await supertest(app)
         .post("/v1/media/upload")
         .set("Authorization", `Bearer ${TEST_USER_1.token}`)
