@@ -1,4 +1,4 @@
-import { integer, pgTable, serial, varchar } from "drizzle-orm/pg-core";
+import { alias, integer, pgTable, serial, varchar } from "drizzle-orm/pg-core";
 import { accountsTable } from "./accounts";
 
 export const mediaTable = pgTable("media", {
@@ -8,3 +8,6 @@ export const mediaTable = pgTable("media", {
     .references(() => accountsTable.id)
     .notNull(),
 });
+
+export const iconsTable = alias(mediaTable, "icon_media");
+export const bannersTable = alias(mediaTable, "banner_media");

@@ -4,6 +4,7 @@ import AccountsRouter from "./accounts.router";
 import RecordLabelsRouter from "./recordLabels.router";
 import MediaRouter from "./media.router";
 import ArtistsRouter from "./artists.router";
+import GroupsRouter from "./groups.router";
 
 const V1Router = Router();
 
@@ -12,4 +13,6 @@ V1Router.use("/accounts", AccountsRouter);
 V1Router.use("/labels", RecordLabelsRouter);
 V1Router.use("/media", MediaRouter);
 V1Router.use("/artists", ArtistsRouter);
+V1Router.use("/groups", GroupsRouter);
+
 export default V1Router;

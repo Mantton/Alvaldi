@@ -1,5 +1,6 @@
 import db from "@/clients/postgres";
 import { isProduction } from "@/config/env";
+import { runMigrations } from "@/db/migrate";
 import { sql } from "drizzle-orm";
 
 export async function resetPostgresDatabase() {

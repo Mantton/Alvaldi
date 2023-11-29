@@ -1,5 +1,8 @@
 import { z } from "zod";
 
+const SerialIDArraySchema = z
+  .array(z.number().int().nonnegative().min(1))
+  .refine((nums) => Array.from(new Set(nums)));
 export const CreateRecordLabelRequestSchema = z.object({
   name: z
     .string()
@@ -15,10 +18,7 @@ export const CreateRecordLabelRequestSchema = z.object({
 export const CreateArtistRequestSchema = z.object({
   stageName: z.string(), // TODO: stricter validation on this
   label: z.number().int().nonnegative().min(1),
-  groups: z
-    .array(z.number().int().nonnegative().min(1))
-    .refine((nums) => Array.from(new Set(nums)))
-    .optional(),
+  groups: SerialIDArraySchema.optional().optional(),
   icon: z.string().length(21).optional(),
   banner: z.string().length(21).optional(),
 });
@@ -28,4 +28,7 @@ export const CreateGroupRequestSchema = z.object({
   label: z.number().int().nonnegative().min(1),
   icon: z.string().length(21).optional(),
   banner: z.string().length(21).optional(),
+  artists: SerialIDArraySchema.optional(),
 });
+
+export type CreateGroupRequest = z.infer<typeof CreateGroupRequestSchema>;

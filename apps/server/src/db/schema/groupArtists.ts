@@ -5,8 +5,12 @@ import { artistsTable } from "./artist";
 export const groupArtistsTable = pgTable(
   "group_artists",
   {
-    groupId: integer("group_id").references(() => groupsTable.id),
-    artistId: integer("artist_id").references(() => artistsTable.id),
+    groupId: integer("group_id")
+      .references(() => groupsTable.id)
+      .notNull(),
+    artistId: integer("artist_id")
+      .references(() => artistsTable.id)
+      .notNull(),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.groupId, table.artistId] }),

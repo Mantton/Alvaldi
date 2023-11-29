@@ -1,14 +1,13 @@
 import db from "@/clients/postgres";
-import { recordLabelsTable } from "@/db/schema/recordLabels";
 import { BadRequestError } from "@/errors";
 import { CreateArtistRequestSchema } from "@alvaldi/common";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { consumeImageNano } from "./media.service";
 import { artistsTable } from "@/db/schema/artist";
 import { groupArtistsTable } from "@/db/schema/groupArtists";
-import { mediaTable } from "@/db/schema/media";
-import { alias } from "drizzle-orm/pg-core";
+import { recordLabelExists } from "./recordLabels.service";
+import { consumeMediaToken } from "@/utils/media";
+import { bannersTable, iconsTable } from "@/db/schema/media";
 
 type CreateArtistProps = z.infer<typeof CreateArtistRequestSchema>;
 
@@ -17,27 +16,15 @@ export const createArtistRecord = async (
   creatorId: number
 ) => {
   // some validation checks
-  // label exists
-  const labels = await db
-    .select({ id: recordLabelsTable.id })
-    .from(recordLabelsTable)
-    .where(eq(recordLabelsTable.id, data.label));
 
-  if (!labels.length) throw new BadRequestError();
+  // label exists
+  const labelExists = await recordLabelExists(data.label);
+  if (!labelExists) throw new BadRequestError();
 
   // TODO: Check that groups exists
 
-  // images
-  let iconId: null | number = null;
-  let bannerId: null | number = null;
-
-  // Get Image ID's from db
-  if (data.icon) {
-    iconId = await consumeImageNano(data.icon);
-  }
-  if (data.banner) {
-    bannerId = await consumeImageNano(data.banner);
-  }
+  // consume media tokens
+  const [iconId, bannerId] = await consumeMediaToken(data.icon, data.banner);
 
   const id = await db.transaction(async (tx) => {
     // create record on artist table
@@ -66,9 +53,6 @@ export const createArtistRecord = async (
 };
 
 export const getArtistWithID = async (id: number) => {
-  const iconsTable = alias(mediaTable, "icon_media");
-  const bannersTable = alias(mediaTable, "banner_media");
-
   const results = await db
     .select({
       id: artistsTable.id,

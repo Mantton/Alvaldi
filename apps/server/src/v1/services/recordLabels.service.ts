@@ -1,6 +1,9 @@
 import db from "@/clients/postgres";
 import { recordLabelsTable } from "@/db/schema/recordLabels";
 import { consumeImageNano } from "./media.service";
+import { BadRequestError } from "@/errors";
+import { eq } from "drizzle-orm";
+import { consumeMediaToken } from "@/utils/media";
 
 /**
  * Adds a new Record label Record to the database
@@ -15,16 +18,8 @@ export const createRecordLabel = async (
   iconImage?: string,
   bannerImage?: string
 ) => {
-  let iconId: null | number = null;
-  let bannerId: null | number = null;
-
-  // Get Image ID's from db
-  if (iconImage) {
-    iconId = await consumeImageNano(iconImage);
-  }
-  if (bannerImage) {
-    bannerId = await consumeImageNano(bannerImage);
-  }
+  // consume media tokens
+  const [iconId, bannerId] = await consumeMediaToken(iconImage, bannerImage);
   const [record] = await db
     .insert(recordLabelsTable)
     .values({
@@ -38,4 +33,13 @@ export const createRecordLabel = async (
   if (!record) throw new Error("[createRecordLabel] Failed to Create Record");
 
   return record;
+};
+
+export const recordLabelExists = async (id: number) => {
+  const labels = await db
+    .select({ id: recordLabelsTable.id })
+    .from(recordLabelsTable)
+    .where(eq(recordLabelsTable.id, id));
+
+  return !!labels.length;
 };

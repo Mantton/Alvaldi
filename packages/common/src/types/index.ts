@@ -3,6 +3,10 @@ export type CreateRecordLabelResponse = {
   name: string;
 };
 
+export type GenericCreateRequestResponse = {
+  id: number;
+};
+
 export type UploadMediaResponse = {
   id: string;
 };
