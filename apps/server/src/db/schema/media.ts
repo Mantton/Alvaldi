@@ -8,6 +8,3 @@ export const mediaTable = pgTable("media", {
     .references(() => accountsTable.id)
     .notNull(),
 });
-
-export const iconsTable = alias(mediaTable, "icon_media");
-export const bannersTable = alias(mediaTable, "banner_media");

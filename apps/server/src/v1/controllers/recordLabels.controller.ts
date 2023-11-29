@@ -1,13 +1,12 @@
 import { getAuthenticatedUser } from "@/utils/request";
 import type {
-  CreateRecordLabelRequestSchema,
+  CreateRecordLabelRequest,
   CreateRecordLabelResponse,
 } from "@alvaldi/common";
-import { z } from "zod";
 import { createRecordLabel } from "../services/recordLabels.service";
 
 type HandleCreateRecordLabelRequest = TRequestHandler<
-  z.infer<typeof CreateRecordLabelRequestSchema>,
+  CreateRecordLabelRequest,
   any,
   any,
   CreateRecordLabelResponse

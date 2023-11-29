@@ -6,10 +6,12 @@ import { consumeMediaToken } from "@/utils/media";
 import { groupsTable } from "@/db/schema/group";
 import { groupArtistsTable } from "@/db/schema/groupArtists";
 import { eq } from "drizzle-orm";
-import { bannersTable, iconsTable, mediaTable } from "@/db/schema/media";
 import { recordLabelsTable } from "@/db/schema/recordLabels";
 import { alias } from "drizzle-orm/pg-core";
 import { artistsTable } from "@/db/schema/artist";
+import { allArtistsExistsIn } from "./artists.service";
+import { mediaTable } from "@/db/schema/media";
+import { iconsTable, bannersTable } from "@/utils/aliases";
 
 export const createGroupRecord = async (
   creatorId: number,
@@ -19,7 +21,11 @@ export const createGroupRecord = async (
   const labelExists = await recordLabelExists(data.label);
   if (!labelExists) throw new BadRequestError();
 
-  // TODO: Check that artists exists
+  // Check that artists exists
+  if (data.artists) {
+    const artistsExist = await allArtistsExistsIn(data.artists);
+    if (!artistsExist) throw new BadRequestError();
+  }
 
   // consume media tokens
   const [iconId, bannerId] = await consumeMediaToken(data.icon, data.banner);
@@ -93,4 +99,13 @@ export const getGroupInfo = async (id: number) => {
     ...results?.[0],
     artists,
   };
+};
+
+export const groupExists = async (id: number) => {
+  const results = await db
+    .select({ id: groupsTable.id })
+    .from(groupsTable)
+    .where(eq(groupsTable.id, id));
+
+  return results.length !== 0;
 };

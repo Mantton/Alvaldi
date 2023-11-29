@@ -1,16 +1,15 @@
 import { getAuthenticatedUser } from "@/utils/request";
-import {
-  CreateArtistRequestSchema,
-  CreateArtistResponse,
-} from "@alvaldi/common";
-import { z } from "zod";
 import { createArtistRecord } from "../services/artists.service";
+import {
+  CreateArtistRequest,
+  GenericCreateRequestResponse,
+} from "@alvaldi/common";
 
 type CreateArtistRequestHandler = TRequestHandler<
-  z.infer<typeof CreateArtistRequestSchema>,
+  CreateArtistRequest,
   any,
   any,
-  CreateArtistResponse
+  GenericCreateRequestResponse
 >;
 
 export const handleCreateArtistRequest: CreateArtistRequestHandler = async (

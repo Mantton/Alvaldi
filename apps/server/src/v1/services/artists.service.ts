@@ -1,13 +1,13 @@
 import db from "@/clients/postgres";
 import { BadRequestError } from "@/errors";
-import { CreateArtistRequestSchema } from "@alvaldi/common";
-import { eq } from "drizzle-orm";
+import { BasicArtistInfo, CreateArtistRequestSchema } from "@alvaldi/common";
+import { eq, sql, inArray } from "drizzle-orm";
 import { z } from "zod";
 import { artistsTable } from "@/db/schema/artist";
 import { groupArtistsTable } from "@/db/schema/groupArtists";
 import { recordLabelExists } from "./recordLabels.service";
 import { consumeMediaToken } from "@/utils/media";
-import { bannersTable, iconsTable } from "@/db/schema/media";
+import { iconsTable, bannersTable } from "@/utils/aliases";
 
 type CreateArtistProps = z.infer<typeof CreateArtistRequestSchema>;
 
@@ -52,7 +52,9 @@ export const createArtistRecord = async (
   return id;
 };
 
-export const getArtistWithID = async (id: number) => {
+export const getArtistWithID = async (
+  id: number
+): Promise<BasicArtistInfo | null> => {
   const results = await db
     .select({
       id: artistsTable.id,
@@ -68,4 +70,13 @@ export const getArtistWithID = async (id: number) => {
   if (!results.length) return null;
 
   return results?.[0];
+};
+
+export const allArtistsExistsIn = async (ids: number[]) => {
+  const [{ count }] = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(artistsTable)
+    .where(inArray(artistsTable.id, ids));
+
+  return ids.length == count;
 };

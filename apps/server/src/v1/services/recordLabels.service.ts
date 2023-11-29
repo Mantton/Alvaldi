@@ -1,7 +1,5 @@
 import db from "@/clients/postgres";
 import { recordLabelsTable } from "@/db/schema/recordLabels";
-import { consumeImageNano } from "./media.service";
-import { BadRequestError } from "@/errors";
 import { eq } from "drizzle-orm";
 import { consumeMediaToken } from "@/utils/media";
 
@@ -24,7 +22,7 @@ export const createRecordLabel = async (
     .insert(recordLabelsTable)
     .values({
       name,
-      creatorId: creatorId,
+      creatorId,
       iconImageId: iconId,
       bannerImageId: bannerId,
     })
