@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { CollectableRarity } from "../types";
 
 const SerialIDArraySchema = z
   .array(z.number().int().nonnegative().min(1))
@@ -45,9 +46,21 @@ export const CreateEraRequestSchema = z.object({
   banner: z.string().length(21).optional(),
 });
 
+export const CreateCollectableRequestSchema = z.object({
+  era: z.number().int().nonnegative().min(1),
+  media: z.string().length(21),
+  rarity: z.nativeEnum(CollectableRarity),
+  // BE will require one or the other with `group` taking priority
+  group: z.number().nonnegative().min(1).optional(),
+  artists: SerialIDArraySchema.optional(),
+});
+
 export type CreateGroupRequest = z.infer<typeof CreateGroupRequestSchema>;
 export type CreateArtistRequest = z.infer<typeof CreateArtistRequestSchema>;
 export type CreateRecordLabelRequest = z.infer<
   typeof CreateRecordLabelRequestSchema
 >;
 export type CreateEraRequest = z.infer<typeof CreateEraRequestSchema>;
+export type CreateCollectableRequest = z.infer<
+  typeof CreateCollectableRequestSchema
+>;

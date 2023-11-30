@@ -1,4 +1,10 @@
-import { alias, integer, pgTable, serial, varchar } from "drizzle-orm/pg-core";
+import {
+  integer,
+  pgTable,
+  serial,
+  timestamp,
+  varchar,
+} from "drizzle-orm/pg-core";
 import { accountsTable } from "./accounts";
 
 export const mediaTable = pgTable("media", {
@@ -7,4 +13,5 @@ export const mediaTable = pgTable("media", {
   uploaderId: integer("uploader_id")
     .references(() => accountsTable.id)
     .notNull(),
+  dateUploaded: timestamp("date_uploaded").defaultNow(),
 });

@@ -20,9 +20,6 @@ export const createEraRecord = async (
   creatorId: number,
   data: CreateEraRequest
 ) => {
-  // consume media
-  const [iconId, bannerId] = await consumeMediaToken(data.icon, data.banner);
-
   // DNE guard
   if (data.group) {
     const exists = await groupExists(data.group);
@@ -31,6 +28,9 @@ export const createEraRecord = async (
     const exists = await allArtistsExistsIn(data.artists);
     if (!exists) throw new BadRequestError();
   }
+
+  // consume media
+  const [iconId, bannerId] = await consumeMediaToken(data.icon, data.banner);
 
   // db transaction
   const eraId = await db.transaction(async (tx) => {
@@ -55,7 +55,7 @@ export const createEraRecord = async (
       });
 
       // Fetch Artists in Group
-      const artists = await db
+      const artists = await tx
         .select({
           id: artistsTable.id,
         })

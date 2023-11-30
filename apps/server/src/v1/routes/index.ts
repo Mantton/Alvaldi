@@ -6,6 +6,7 @@ import MediaRouter from "./media.router";
 import ArtistsRouter from "./artists.router";
 import GroupsRouter from "./groups.router";
 import ErasRouter from "./eras.router";
+import CollectablesRouter from "./collectables.router";
 
 const V1Router = Router();
 
@@ -16,5 +17,6 @@ V1Router.use("/media", MediaRouter);
 V1Router.use("/artists", ArtistsRouter);
 V1Router.use("/groups", GroupsRouter);
 V1Router.use("/eras", ErasRouter);
+V1Router.use("/collectables", CollectablesRouter);
 
 export default V1Router;
