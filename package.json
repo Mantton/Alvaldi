@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "server": "pnpm --filter @alvaldi/server",
-    "common": "pnpm --filter @alvaldi/common"
+    "common": "pnpm --filter @alvaldi/common",
+    "client": "pnpm --filter @alvaldi/client"
   },
   "keywords": [],
   "author": "Mantton <mantton.official@gmail.com>",
