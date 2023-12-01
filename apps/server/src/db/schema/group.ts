@@ -1,5 +1,6 @@
 import {
   integer,
+  pgEnum,
   pgTable,
   serial,
   timestamp,
@@ -8,6 +9,8 @@ import {
 import { recordLabelsTable } from "./recordLabels";
 import { accountsTable } from "./accounts";
 import { mediaTable } from "./media";
+
+export const groupTypeEnum = pgEnum("groupGender", ["boy", "girl"]);
 
 export const groupsTable = pgTable("groups", {
   id: serial("id").primaryKey(),
@@ -21,4 +24,5 @@ export const groupsTable = pgTable("groups", {
   iconImageId: integer("icon_image_id").references(() => mediaTable.id),
   bannerImageId: integer("banner_image_id").references(() => mediaTable.id),
   dateAdded: timestamp("date_added").defaultNow(),
+  groupType: groupTypeEnum("group_gender"),
 });

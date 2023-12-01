@@ -1,0 +1,1360 @@
+{
+  "id": "a857e193-d5e6-47c9-89bd-2d8d9dd44f8d",
+  "prevId": "522b2baa-c8a1-42c1-8d61-230cb857ac0b",
+  "version": "5",
+  "dialect": "pg",
+  "tables": {
+    "accounts": {
+      "name": "accounts",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "provider_id": {
+          "name": "provider_id",
+          "type": "varchar(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "points": {
+          "name": "points",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 10000
+        },
+        "handle": {
+          "name": "handle",
+          "type": "varchar(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "date_created": {
+          "name": "date_created",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "profile_image": {
+          "name": "profile_image",
+          "type": "varchar(150)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "handle_unique_index": {
+          "name": "handle_unique_index",
+          "columns": [
+            "handle"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "accounts_provider_id_unique": {
+          "name": "accounts_provider_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "provider_id"
+          ]
+        }
+      }
+    },
+    "admins": {
+      "name": "admins",
+      "schema": "",
+      "columns": {
+        "account_id": {
+          "name": "account_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "date_added": {
+          "name": "date_added",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "admins_account_id_accounts_id_fk": {
+          "name": "admins_account_id_accounts_id_fk",
+          "tableFrom": "admins",
+          "tableTo": "accounts",
+          "columnsFrom": [
+            "account_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "admins_account_id_unique": {
+          "name": "admins_account_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "account_id"
+          ]
+        }
+      }
+    },
+    "artists": {
+      "name": "artists",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "stage_name": {
+          "name": "stage_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "icon_image_id": {
+          "name": "icon_image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "banner_image_id": {
+          "name": "banner_image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "creator_id": {
+          "name": "creator_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "date_added": {
+          "name": "date_added",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "label_id": {
+          "name": "label_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "artists_icon_image_id_media_id_fk": {
+          "name": "artists_icon_image_id_media_id_fk",
+          "tableFrom": "artists",
+          "tableTo": "media",
+          "columnsFrom": [
+            "icon_image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "artists_banner_image_id_media_id_fk": {
+          "name": "artists_banner_image_id_media_id_fk",
+          "tableFrom": "artists",
+          "tableTo": "media",
+          "columnsFrom": [
+            "banner_image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "artists_creator_id_accounts_id_fk": {
+          "name": "artists_creator_id_accounts_id_fk",
+          "tableFrom": "artists",
+          "tableTo": "accounts",
+          "columnsFrom": [
+            "creator_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "artists_label_id_record_labels_id_fk": {
+          "name": "artists_label_id_record_labels_id_fk",
+          "tableFrom": "artists",
+          "tableTo": "record_labels",
+          "columnsFrom": [
+            "label_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "artist_collectables": {
+      "name": "artist_collectables",
+      "schema": "",
+      "columns": {
+        "artist_id": {
+          "name": "artist_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "collectable_id": {
+          "name": "collectable_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "artist_collectables_artist_id_artists_id_fk": {
+          "name": "artist_collectables_artist_id_artists_id_fk",
+          "tableFrom": "artist_collectables",
+          "tableTo": "artists",
+          "columnsFrom": [
+            "artist_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "artist_collectables_collectable_id_collectables_id_fk": {
+          "name": "artist_collectables_collectable_id_collectables_id_fk",
+          "tableFrom": "artist_collectables",
+          "tableTo": "collectables",
+          "columnsFrom": [
+            "collectable_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "artist_collectables_artist_id_collectable_id": {
+          "name": "artist_collectables_artist_id_collectable_id",
+          "columns": [
+            "artist_id",
+            "collectable_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "artist_eras": {
+      "name": "artist_eras",
+      "schema": "",
+      "columns": {
+        "artist_id": {
+          "name": "artist_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "era_id": {
+          "name": "era_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "artist_eras_artist_id_artists_id_fk": {
+          "name": "artist_eras_artist_id_artists_id_fk",
+          "tableFrom": "artist_eras",
+          "tableTo": "artists",
+          "columnsFrom": [
+            "artist_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "artist_eras_era_id_eras_id_fk": {
+          "name": "artist_eras_era_id_eras_id_fk",
+          "tableFrom": "artist_eras",
+          "tableTo": "eras",
+          "columnsFrom": [
+            "era_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "artist_eras_artist_id_era_id": {
+          "name": "artist_eras_artist_id_era_id",
+          "columns": [
+            "artist_id",
+            "era_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "cards": {
+      "name": "cards",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "collectable_id": {
+          "name": "collectable_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "mint_date": {
+          "name": "mint_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "owner_id": {
+          "name": "owner_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "cards_collectable_id_collectables_id_fk": {
+          "name": "cards_collectable_id_collectables_id_fk",
+          "tableFrom": "cards",
+          "tableTo": "collectables",
+          "columnsFrom": [
+            "collectable_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "cards_owner_id_accounts_id_fk": {
+          "name": "cards_owner_id_accounts_id_fk",
+          "tableFrom": "cards",
+          "tableTo": "accounts",
+          "columnsFrom": [
+            "owner_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "collectables": {
+      "name": "collectables",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "era_id": {
+          "name": "era_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "media_id": {
+          "name": "media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "date_added": {
+          "name": "date_added",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "creator_id": {
+          "name": "creator_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rarity": {
+          "name": "rarity",
+          "type": "rarity",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "collectables_era_id_eras_id_fk": {
+          "name": "collectables_era_id_eras_id_fk",
+          "tableFrom": "collectables",
+          "tableTo": "eras",
+          "columnsFrom": [
+            "era_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "collectables_media_id_media_id_fk": {
+          "name": "collectables_media_id_media_id_fk",
+          "tableFrom": "collectables",
+          "tableTo": "media",
+          "columnsFrom": [
+            "media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "collectables_creator_id_accounts_id_fk": {
+          "name": "collectables_creator_id_accounts_id_fk",
+          "tableFrom": "collectables",
+          "tableTo": "accounts",
+          "columnsFrom": [
+            "creator_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "collectables_media_id_unique": {
+          "name": "collectables_media_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "media_id"
+          ]
+        }
+      }
+    },
+    "eras": {
+      "name": "eras",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "creator_id": {
+          "name": "creator_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "date_added": {
+          "name": "date_added",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "date": {
+          "name": "date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "icon_image_id": {
+          "name": "icon_image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "banner_image_id": {
+          "name": "banner_image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "eras_creator_id_accounts_id_fk": {
+          "name": "eras_creator_id_accounts_id_fk",
+          "tableFrom": "eras",
+          "tableTo": "accounts",
+          "columnsFrom": [
+            "creator_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "eras_icon_image_id_media_id_fk": {
+          "name": "eras_icon_image_id_media_id_fk",
+          "tableFrom": "eras",
+          "tableTo": "media",
+          "columnsFrom": [
+            "icon_image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "eras_banner_image_id_media_id_fk": {
+          "name": "eras_banner_image_id_media_id_fk",
+          "tableFrom": "eras",
+          "tableTo": "media",
+          "columnsFrom": [
+            "banner_image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "groups": {
+      "name": "groups",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "label_id": {
+          "name": "label_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "eng_name": {
+          "name": "eng_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "creator_id": {
+          "name": "creator_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "icon_image_id": {
+          "name": "icon_image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "banner_image_id": {
+          "name": "banner_image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "date_added": {
+          "name": "date_added",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "group_gender": {
+          "name": "group_gender",
+          "type": "groupGender",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "groups_label_id_record_labels_id_fk": {
+          "name": "groups_label_id_record_labels_id_fk",
+          "tableFrom": "groups",
+          "tableTo": "record_labels",
+          "columnsFrom": [
+            "label_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "groups_creator_id_accounts_id_fk": {
+          "name": "groups_creator_id_accounts_id_fk",
+          "tableFrom": "groups",
+          "tableTo": "accounts",
+          "columnsFrom": [
+            "creator_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "groups_icon_image_id_media_id_fk": {
+          "name": "groups_icon_image_id_media_id_fk",
+          "tableFrom": "groups",
+          "tableTo": "media",
+          "columnsFrom": [
+            "icon_image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "groups_banner_image_id_media_id_fk": {
+          "name": "groups_banner_image_id_media_id_fk",
+          "tableFrom": "groups",
+          "tableTo": "media",
+          "columnsFrom": [
+            "banner_image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "group_artists": {
+      "name": "group_artists",
+      "schema": "",
+      "columns": {
+        "group_id": {
+          "name": "group_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "artist_id": {
+          "name": "artist_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "group_artists_group_id_groups_id_fk": {
+          "name": "group_artists_group_id_groups_id_fk",
+          "tableFrom": "group_artists",
+          "tableTo": "groups",
+          "columnsFrom": [
+            "group_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "group_artists_artist_id_artists_id_fk": {
+          "name": "group_artists_artist_id_artists_id_fk",
+          "tableFrom": "group_artists",
+          "tableTo": "artists",
+          "columnsFrom": [
+            "artist_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "group_artists_group_id_artist_id": {
+          "name": "group_artists_group_id_artist_id",
+          "columns": [
+            "group_id",
+            "artist_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "group_collectables": {
+      "name": "group_collectables",
+      "schema": "",
+      "columns": {
+        "group_id": {
+          "name": "group_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "collectable_id": {
+          "name": "collectable_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "group_collectables_group_id_groups_id_fk": {
+          "name": "group_collectables_group_id_groups_id_fk",
+          "tableFrom": "group_collectables",
+          "tableTo": "groups",
+          "columnsFrom": [
+            "group_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "group_collectables_collectable_id_collectables_id_fk": {
+          "name": "group_collectables_collectable_id_collectables_id_fk",
+          "tableFrom": "group_collectables",
+          "tableTo": "collectables",
+          "columnsFrom": [
+            "collectable_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "group_collectables_group_id_collectable_id": {
+          "name": "group_collectables_group_id_collectable_id",
+          "columns": [
+            "group_id",
+            "collectable_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "group_eras": {
+      "name": "group_eras",
+      "schema": "",
+      "columns": {
+        "group_id": {
+          "name": "group_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "era_id": {
+          "name": "era_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "group_eras_group_id_groups_id_fk": {
+          "name": "group_eras_group_id_groups_id_fk",
+          "tableFrom": "group_eras",
+          "tableTo": "groups",
+          "columnsFrom": [
+            "group_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "group_eras_era_id_eras_id_fk": {
+          "name": "group_eras_era_id_eras_id_fk",
+          "tableFrom": "group_eras",
+          "tableTo": "eras",
+          "columnsFrom": [
+            "era_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "group_eras_group_id_era_id": {
+          "name": "group_eras_group_id_era_id",
+          "columns": [
+            "group_id",
+            "era_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "media": {
+      "name": "media",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "url": {
+          "name": "url",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "uploader_id": {
+          "name": "uploader_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "date_uploaded": {
+          "name": "date_uploaded",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "media_uploader_id_accounts_id_fk": {
+          "name": "media_uploader_id_accounts_id_fk",
+          "tableFrom": "media",
+          "tableTo": "accounts",
+          "columnsFrom": [
+            "uploader_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "media_url_unique": {
+          "name": "media_url_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "url"
+          ]
+        }
+      }
+    },
+    "artist_packs": {
+      "name": "artist_packs",
+      "schema": "",
+      "columns": {
+        "pack_id": {
+          "name": "pack_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "artist_id": {
+          "name": "artist_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "artist_packs_pack_id_packs_id_fk": {
+          "name": "artist_packs_pack_id_packs_id_fk",
+          "tableFrom": "artist_packs",
+          "tableTo": "packs",
+          "columnsFrom": [
+            "pack_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "artist_packs_artist_id_artists_id_fk": {
+          "name": "artist_packs_artist_id_artists_id_fk",
+          "tableFrom": "artist_packs",
+          "tableTo": "artists",
+          "columnsFrom": [
+            "artist_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "artist_packs_pack_id_unique": {
+          "name": "artist_packs_pack_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "pack_id"
+          ]
+        }
+      }
+    },
+    "era_packs": {
+      "name": "era_packs",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "era_id": {
+          "name": "era_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "era_packs_id_packs_id_fk": {
+          "name": "era_packs_id_packs_id_fk",
+          "tableFrom": "era_packs",
+          "tableTo": "packs",
+          "columnsFrom": [
+            "id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "era_packs_era_id_eras_id_fk": {
+          "name": "era_packs_era_id_eras_id_fk",
+          "tableFrom": "era_packs",
+          "tableTo": "eras",
+          "columnsFrom": [
+            "era_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "era_packs_id_unique": {
+          "name": "era_packs_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id"
+          ]
+        },
+        "era_packs_era_id_unique": {
+          "name": "era_packs_era_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "era_id"
+          ]
+        }
+      }
+    },
+    "group_packs": {
+      "name": "group_packs",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "group_table": {
+          "name": "group_table",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "group_packs_id_packs_id_fk": {
+          "name": "group_packs_id_packs_id_fk",
+          "tableFrom": "group_packs",
+          "tableTo": "packs",
+          "columnsFrom": [
+            "id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "group_packs_group_table_groups_id_fk": {
+          "name": "group_packs_group_table_groups_id_fk",
+          "tableFrom": "group_packs",
+          "tableTo": "groups",
+          "columnsFrom": [
+            "group_table"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "group_packs_id_unique": {
+          "name": "group_packs_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id"
+          ]
+        },
+        "group_packs_group_table_unique": {
+          "name": "group_packs_group_table_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "group_table"
+          ]
+        }
+      }
+    },
+    "packs": {
+      "name": "packs",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "owner_id": {
+          "name": "owner_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rarity": {
+          "name": "rarity",
+          "type": "rarity",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "minted_at": {
+          "name": "minted_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "is_consumed": {
+          "name": "is_consumed",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "group_gender": {
+          "name": "group_gender",
+          "type": "groupGender",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "packs_owner_id_accounts_id_fk": {
+          "name": "packs_owner_id_accounts_id_fk",
+          "tableFrom": "packs",
+          "tableTo": "accounts",
+          "columnsFrom": [
+            "owner_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "record_label_packs": {
+      "name": "record_label_packs",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "label_id": {
+          "name": "label_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "record_label_packs_id_packs_id_fk": {
+          "name": "record_label_packs_id_packs_id_fk",
+          "tableFrom": "record_label_packs",
+          "tableTo": "packs",
+          "columnsFrom": [
+            "id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "record_label_packs_label_id_record_labels_id_fk": {
+          "name": "record_label_packs_label_id_record_labels_id_fk",
+          "tableFrom": "record_label_packs",
+          "tableTo": "record_labels",
+          "columnsFrom": [
+            "label_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "record_label_packs_id_unique": {
+          "name": "record_label_packs_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id"
+          ]
+        },
+        "record_label_packs_label_id_unique": {
+          "name": "record_label_packs_label_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "label_id"
+          ]
+        }
+      }
+    },
+    "record_labels": {
+      "name": "record_labels",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "date_added": {
+          "name": "date_added",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(120)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "creator_id": {
+          "name": "creator_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "banner_image_id": {
+          "name": "banner_image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "icon_image_id": {
+          "name": "icon_image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "record_labels_creator_id_accounts_id_fk": {
+          "name": "record_labels_creator_id_accounts_id_fk",
+          "tableFrom": "record_labels",
+          "tableTo": "accounts",
+          "columnsFrom": [
+            "creator_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "record_labels_banner_image_id_media_id_fk": {
+          "name": "record_labels_banner_image_id_media_id_fk",
+          "tableFrom": "record_labels",
+          "tableTo": "media",
+          "columnsFrom": [
+            "banner_image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "record_labels_icon_image_id_media_id_fk": {
+          "name": "record_labels_icon_image_id_media_id_fk",
+          "tableFrom": "record_labels",
+          "tableTo": "media",
+          "columnsFrom": [
+            "icon_image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "record_labels_name_unique": {
+          "name": "record_labels_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        }
+      }
+    }
+  },
+  "enums": {
+    "rarity": {
+      "name": "rarity",
+      "values": {
+        "common": "common",
+        "superior": "superior",
+        "rare": "rare",
+        "elite": "elite",
+        "legendary": "legendary",
+        "celestial": "celestial"
+      }
+    },
+    "groupGender": {
+      "name": "groupGender",
+      "values": {
+        "boy": "boy",
+        "girl": "girl"
+      }
+    }
+  },
+  "schemas": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}

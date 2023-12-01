@@ -71,6 +71,13 @@
       "when": 1701310195216,
       "tag": "0009_silky_anthem",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1701401681486,
+      "tag": "0010_unusual_pride",
+      "breakpoints": true
     }
   ]
 }

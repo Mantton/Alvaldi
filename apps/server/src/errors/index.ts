@@ -1,5 +1,6 @@
 export class APIError extends Error {
-  code: number = 400;
+  code: number = 500;
+  name: string = "Server Error";
 }
 
 /**
@@ -49,6 +50,14 @@ export class RecordNotFoundError extends APIError {
 export class BadRequestError extends APIError {
   constructor() {
     super("bad request");
+    this.name = "Bad Request";
+    this.code = 400;
+  }
+}
+
+export class InsufficientBalanceError extends APIError {
+  constructor() {
+    super("insufficient balance");
     this.name = "Bad Request";
     this.code = 400;
   }

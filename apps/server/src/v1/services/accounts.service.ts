@@ -4,6 +4,8 @@ import { BasicAccountInfo } from "@/types/accounts";
 import { eq } from "drizzle-orm";
 import { v4 as uuidv4 } from "uuid";
 import { adminsTable } from "@/db/schema/admins";
+import { BadRequestError, InsufficientBalanceError } from "@/errors";
+import { getPointsForPackKey } from "@/utils/packs";
 /**
  * creates a new user from a clerk user.
  * @param user A clerk user JSON Object
@@ -98,4 +100,34 @@ export const setAccountAsAdministrator = async (id: number) => {
   const isAdmin = await isAdministratorSerialID(id);
   if (isAdmin) return; // already admin do nothing
   await db.insert(adminsTable).values({ accountId: id });
+};
+
+/**
+ * gets the number of points an account
+ * @param id ID Of the account
+ * @returns the points owned by the account if the accounts exists, else null
+ */
+export const getPointsForAccount = async (id: number) => {
+  const [record] = await db
+    .select({ points: accountsTable.points })
+    .from(accountsTable)
+    .where(eq(accountsTable.id, id));
+
+  if (!record) throw new BadRequestError();
+
+  return record.points;
+};
+
+/**
+ * Throws an InSufficientBalance Error if the user does not have enough points to make a purchase
+ * @param accountId The ID of the account making the purchase
+ * @param pointsRequired The Points To be made
+ */
+export const guardSufficientBalanceAvailableForPurchase = async (
+  accountId: number,
+  pointsRequired: number
+) => {
+  const pointsAvailable = await getPointsForAccount(accountId);
+  if (pointsAvailable < pointsRequired) throw new InsufficientBalanceError();
+  // TODO: dues / checks
 };

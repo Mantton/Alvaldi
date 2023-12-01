@@ -48,6 +48,16 @@ export const storeMedia = async (
 ) => {
   const mediaURL = await uploadToS3(file);
 
+  return storeMediaURL(mediaURL, uploaderId);
+};
+
+/**
+ *
+ * @param mediaURL The URL of the media to store
+ * @param uploaderId the ID of the user uploading this image
+ * @returns returns an object containing a nano id to use to consume an image
+ */
+export const storeMediaURL = async (mediaURL: string, uploaderId: number) => {
   const [record] = await db
     .insert(mediaTable)
     .values({

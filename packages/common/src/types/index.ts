@@ -11,6 +11,11 @@ export type UploadMediaResponse = {
   id: string;
 };
 
+export type BasicOwnerInfo = {
+  id: number;
+  handle: string;
+  iconImageUrl?: string | null;
+};
 export type BasicArtistInfo = {
   id: number;
   stageName: string;
@@ -56,6 +61,7 @@ export type RarityString =
   | "elite"
   | "legendary"
   | "celestial";
+
 export enum CollectableRarity {
   COMMON = "common",
   SUPERIOR = "superior",
@@ -64,3 +70,20 @@ export enum CollectableRarity {
   LEGENDARY = "legendary",
   CELESTIAL = "celestial",
 }
+
+export enum PackGroup {
+  ARTIST = "artist",
+  ERA = "era",
+  GROUP = "group",
+  LABEL = "label",
+  BOY_GROUP = "boyGroup",
+  GIRL_GROUP = "girlGroup",
+  ALL = "all",
+}
+
+export type CardInfo = {
+  id: number;
+  mintDate: Date;
+  collectable: PopulatedCollectableInfo;
+  owner: BasicOwnerInfo;
+};

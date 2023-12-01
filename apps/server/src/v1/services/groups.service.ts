@@ -109,3 +109,20 @@ export const groupExists = async (id: number) => {
 
   return results.length !== 0;
 };
+
+export const getArtistsForGroupWithID = async (groupId: number) => {
+  const artists = await db
+    .select({
+      id: artistsTable.id,
+      stageName: artistsTable.stageName,
+      iconImageUrl: iconsTable.url,
+      bannerImageUrl: bannersTable.url,
+    })
+    .from(groupArtistsTable)
+    .rightJoin(artistsTable, eq(artistsTable.id, groupArtistsTable.artistId))
+    .leftJoin(iconsTable, eq(artistsTable.iconImageId, iconsTable.id))
+    .leftJoin(bannersTable, eq(artistsTable.bannerImageId, bannersTable.id))
+    .where(eq(groupArtistsTable.groupId, groupId));
+
+  return artists;
+};
