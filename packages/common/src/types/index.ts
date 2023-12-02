@@ -1,7 +1,4 @@
-export type CreateRecordLabelResponse = {
-  id: number;
-  name: string;
-};
+export * from "./RecordLabels";
 
 export type GenericCreateRequestResponse = {
   id: number;

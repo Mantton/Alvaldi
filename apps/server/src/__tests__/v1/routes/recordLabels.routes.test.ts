@@ -1,8 +1,12 @@
 import { TEST_USER_1, createDefaultUser } from "@/__tests__/utils/users";
 import app from "@/app";
 import { resetPostgresDatabase } from "@/__tests__/utils/postgres";
-import type { CreateRecordLabelResponse } from "@alvaldi/common";
+import type {
+  CreateRecordLabelResponse,
+  GetRecordLabelListResponse,
+} from "@alvaldi/common";
 import supertest from "supertest";
+import { createRecordLabel } from "@/v1/services/recordLabels.service";
 
 describe("Record Label Routes", () => {
   afterEach(async () => {
@@ -77,6 +81,28 @@ describe("Record Label Routes", () => {
         .put("/v1/labels")
         .set("Authorization", `Bearer ${TEST_USER_1.token}`)
         .send({ name: "YG Entertainment", icon: body.id });
+    });
+  });
+
+  describe("GET /v1/labels", () => {
+    it("should fetch a list of record labels", async () => {
+      await createDefaultUser();
+
+      await createRecordLabel(1, "YG Entertainment");
+      await createRecordLabel(1, "SM Entertainment");
+      await createRecordLabel(1, "HYBE");
+      await createRecordLabel(1, "Starship");
+
+      const { body }: { body: GetRecordLabelListResponse } = await supertest(
+        app
+      )
+        .get("/v1/labels")
+        .expect(200);
+
+      expect(body.hasNext).toBe(false);
+      expect(body.data.map((v) => v.name)).toContain("YG Entertainment");
+      expect(body.data).toHaveLength(4);
+      expect(body.data?.[0].name).toBe("HYBE");
     });
   });
 });
