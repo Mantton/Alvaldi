@@ -9,9 +9,7 @@ import supertest from "supertest";
 import { createRecordLabel } from "@/v1/services/recordLabels.service";
 
 describe("Record Label Routes", () => {
-  afterEach(async () => {
-    await resetPostgresDatabase();
-  });
+  beforeEach(() => resetPostgresDatabase());
 
   describe("PUT /v1/labels", () => {
     it("should respond with  `201` created & a json containing the id of the newly created record label", async () => {

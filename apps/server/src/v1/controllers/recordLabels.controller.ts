@@ -8,7 +8,6 @@ import {
   getRecordLabels,
 } from "../services/recordLabels.service";
 import { RequestHandler } from "express";
-import { BadRequestError } from "@/errors";
 
 type HandleCreateRecordLabelRequest = TRequestHandler<
   CreateRecordLabelRequest,
@@ -23,7 +22,6 @@ export const handleCreateRecordLabel: HandleCreateRecordLabelRequest = async (
   next
 ) => {
   try {
-    req;
     const userID = await getAuthenticatedUser(req);
     const { name, icon, banner } = req.body;
 
@@ -38,9 +36,10 @@ export const handleGetRecordLabel: RequestHandler = async (req, res, next) => {
   try {
     const data = await getRecordLabels();
 
-    if (data.data.length === 0) {
-      throw new BadRequestError();
-    }
+    // TODO: Page Param
+    // if (data.data.length === 0 && page != 1) {
+    //   throw new BadRequestError();
+    // }
 
     res.json(data);
   } catch (error) {

@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import CreateRecordLabelDialog from "@/components/workshop/label/CreateRecordLabelDialog";
 
 export default function WorkShopLabelsPage() {
   return (
@@ -8,7 +8,7 @@ export default function WorkShopLabelsPage() {
           Manage Labels
         </h1>
 
-        <Button>Create</Button>
+        <CreateRecordLabelDialog />
       </div>
       <hr />
 

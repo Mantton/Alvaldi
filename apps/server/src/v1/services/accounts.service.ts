@@ -5,7 +5,6 @@ import { eq } from "drizzle-orm";
 import { v4 as uuidv4 } from "uuid";
 import { adminsTable } from "@/db/schema/admins";
 import { BadRequestError, InsufficientBalanceError } from "@/errors";
-import { getPointsForPackKey } from "@/utils/packs";
 /**
  * creates a new user from a clerk user.
  * @param user A clerk user JSON Object
