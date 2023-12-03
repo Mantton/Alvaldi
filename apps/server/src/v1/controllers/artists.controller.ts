@@ -1,9 +1,10 @@
 import { getAuthenticatedUser } from "@/utils/request";
-import { createArtistRecord } from "../services/artists.service";
+import { createArtistRecord, getAllArtists } from "../services/artists.service";
 import {
   CreateArtistRequest,
   GenericCreateRequestResponse,
 } from "@alvaldi/common";
+import { GetAllArtistsQueryParams } from "@alvaldi/common";
 
 type CreateArtistRequestHandler = TRequestHandler<
   CreateArtistRequest,
@@ -24,5 +25,18 @@ export const handleCreateArtistRequest: CreateArtistRequestHandler = async (
     res.status(201).json({ id });
   } catch (err) {
     next(err);
+  }
+};
+
+export const handleGetAllArtistsRequest: GetRequestHandler<
+  GetAllArtistsQueryParams
+> = async (req, res, next) => {
+  try {
+    const { page, label } = req.query;
+
+    const data = await getAllArtists(page, label);
+    res.json({ data });
+  } catch (error) {
+    next(error);
   }
 };

@@ -1,7 +1,7 @@
 import db from "@/clients/postgres";
 import { BadRequestError } from "@/errors";
 import { BasicArtistInfo, CreateArtistRequestSchema } from "@alvaldi/common";
-import { eq, sql, inArray } from "drizzle-orm";
+import { eq, sql, inArray, asc } from "drizzle-orm";
 import { z } from "zod";
 import { artistsTable } from "@/db/schema/artist";
 import { groupArtistsTable } from "@/db/schema/groupArtists";
@@ -79,4 +79,34 @@ export const allArtistsExistsIn = async (ids: number[]) => {
     .where(inArray(artistsTable.id, ids));
 
   return ids.length == count;
+};
+
+export const getAllArtists = async (
+  page: number,
+  label?: number
+): Promise<BasicArtistInfo[]> => {
+  const limit = 25;
+  const offset = (Math.min(page - 1), 0) * 25;
+
+  let query = db
+    .select({
+      id: artistsTable.id,
+      stageName: artistsTable.stageName,
+      iconImageUrl: iconsTable.url,
+      bannerImageUrl: bannersTable.url,
+    })
+    .from(artistsTable)
+    .leftJoin(iconsTable, eq(iconsTable.id, artistsTable.iconImageId))
+    .leftJoin(bannersTable, eq(bannersTable.id, artistsTable.bannerImageId))
+    .$dynamic();
+  if (label) {
+    query = query.where(eq(artistsTable.labelId, label));
+  }
+
+  query = query
+    .limit(limit)
+    .offset(offset)
+    .orderBy(asc(artistsTable.stageName));
+
+  return await query;
 };
