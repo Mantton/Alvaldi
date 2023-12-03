@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import ImageSelector from "@/components/alv/ImageSelector";
 import { uploadMedia } from "@/api/media";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getWorkshopRecordLabelList } from "@/api";
+import { getWorkshopRecordLabelList, workShopGetAllGroups } from "@/api";
 import {
   Select,
   SelectContent,
@@ -31,6 +31,7 @@ import {
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import { workShopCreateNewArtist } from "@/api/workshop/artists";
+import { MultiSelectComboBox } from "@/components/alv/MultiSelectComboBox";
 // REFERENCE : https://ui.shadcn.com/docs/components/form
 
 type ComponentProps = {
@@ -43,12 +44,9 @@ type ComponentProps = {
 export default function CreateArtistForm({ close }: ComponentProps) {
   // Core
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [selectedLabel, setSelectedLabel] = useState<number | null>(null);
   const queryClient = useQueryClient();
-  const {
-    isPending: isLoadingLabels,
-    error,
-    data: recordLabels,
-  } = useQuery({
+  const labelsQuery = useQuery({
     queryKey: ["workshop.getRecordLabels"],
     queryFn: () => getWorkshopRecordLabelList(),
   });
@@ -60,6 +58,12 @@ export default function CreateArtistForm({ close }: ComponentProps) {
   // Define Form
   const form = useForm<CreateArtistRequest>({
     resolver: zodResolver(CreateArtistRequestSchema),
+  });
+
+  const artistsQuery = useQuery({
+    queryKey: ["workshop.getArtistsForLabel", selectedLabel],
+    enabled: !!selectedLabel,
+    queryFn: () => workShopGetAllGroups(selectedLabel ?? undefined),
   });
 
   // Define Submit Handler
@@ -127,8 +131,12 @@ export default function CreateArtistForm({ close }: ComponentProps) {
             <FormItem>
               <FormLabel>Record Label</FormLabel>
               <Select
-                onValueChange={(v) => field.onChange(parseInt(v))}
-                disabled={!recordLabels || isLoadingLabels}
+                onValueChange={(v) => {
+                  const id = parseInt(v);
+                  field.onChange(id);
+                  setSelectedLabel(id);
+                }}
+                disabled={!labelsQuery.data || labelsQuery.isLoading}
               >
                 <FormControl>
                   <SelectTrigger>
@@ -136,9 +144,9 @@ export default function CreateArtistForm({ close }: ComponentProps) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {recordLabels &&
-                    !isLoadingLabels &&
-                    recordLabels.data.map((label) => {
+                  {labelsQuery.data?.data &&
+                    !labelsQuery.isLoading &&
+                    labelsQuery.data.data.map((label) => {
                       return (
                         <SelectItem value={label.id.toString()} key={label.id}>
                           <div className="flex gap-2 items-center">
@@ -159,6 +167,65 @@ export default function CreateArtistForm({ close }: ComponentProps) {
                     })}
                 </SelectContent>
               </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="groups"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Groups</FormLabel>
+              <FormControl>
+                <MultiSelectComboBox
+                  title="Groups"
+                  items={artistsQuery.data ?? []}
+                  onSelectionChanged={field.onChange}
+                  disabled={!artistsQuery.isFetched}
+                  cell={(item) => (
+                    <div className="flex gap-2 items-center">
+                      <div className="h-8 w-8 rounded-full bg-slate-200 relative">
+                        {item.iconImageUrl && (
+                          <Image
+                            src={item.iconImageUrl}
+                            alt="icon"
+                            fill
+                            className="object-cover rounded-full"
+                          />
+                        )}
+                      </div>
+                      <p className="font-medium">{item.name}</p>
+                    </div>
+                  )}
+                />
+              </FormControl>
+
+              <div className="flex flex-wrap gap-4 items-center">
+                {(artistsQuery.data ?? [])
+                  .filter((v) => form.getValues("groups")?.includes(v.id))
+                  .map((item) => {
+                    return (
+                      <div
+                        key={item.id}
+                        className="flex flex-col gap-1 items-center justify-center w-24 h-24"
+                      >
+                        <div className="h-12 w-12 relative rounded-full bg-slate-200">
+                          {item.iconImageUrl && (
+                            <Image
+                              src={item.iconImageUrl}
+                              alt="icon"
+                              fill
+                              className="object-cover rounded-full"
+                            />
+                          )}
+                        </div>
+                        <p className="font-medium">{item.name}</p>
+                      </div>
+                    );
+                  })}
+              </div>
               <FormMessage />
             </FormItem>
           )}

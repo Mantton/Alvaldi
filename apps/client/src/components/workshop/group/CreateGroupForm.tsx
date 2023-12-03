@@ -31,7 +31,6 @@ import {
 } from "@/components/ui/select";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
-import { SelectArtistsComboBox } from "./SelectArtistsFromLabel";
 // REFERENCE : https://ui.shadcn.com/docs/components/form
 
 type ComponentProps = {
@@ -178,11 +177,7 @@ export default function CreateGroupForm({ close }: ComponentProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Artists</FormLabel>
-              <SelectArtistsComboBox
-                artists={recordLabels?.data ?? []}
-                selections={artistSelections}
-                setSelections={setArtistSelections}
-              />
+
               <FormMessage />
             </FormItem>
           )}

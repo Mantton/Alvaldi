@@ -2,6 +2,8 @@ import { z } from "zod";
 import { CollectableRarity, PackGroup } from "../types";
 import { SerialIDArraySchema } from "./utils";
 export * from "./group";
+export * from "./artists";
+
 export const CreateRecordLabelRequestSchema = z.object({
   name: z
     .string()
@@ -10,14 +12,6 @@ export const CreateRecordLabelRequestSchema = z.object({
     .min(3)
     .max(40),
 
-  icon: z.string().length(21).optional(),
-  banner: z.string().length(21).optional(),
-});
-
-export const CreateArtistRequestSchema = z.object({
-  stageName: z.string().min(2), // TODO: stricter validation on this
-  label: z.number().int().nonnegative().min(1),
-  groups: SerialIDArraySchema.optional().optional(),
   icon: z.string().length(21).optional(),
   banner: z.string().length(21).optional(),
 });
@@ -50,7 +44,6 @@ export const BuyPackRequestSchema = z.object({
   identifier: z.number().nonnegative().min(1),
 });
 
-export type CreateArtistRequest = z.infer<typeof CreateArtistRequestSchema>;
 export type CreateRecordLabelRequest = z.infer<
   typeof CreateRecordLabelRequestSchema
 >;

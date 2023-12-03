@@ -84,3 +84,7 @@ export type CardInfo = {
   collectable: PopulatedCollectableInfo;
   owner: BasicOwnerInfo;
 };
+
+export type GenericGetListResponse<T> = {
+  data: T[];
+};

@@ -1,5 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import CreateGroupDialog from "@/components/workshop/group/CreateGroupDialog";
+import GroupTableView from "@/components/workshop/group/GroupTable";
 
 export default function WorkShopGroupsPage() {
   return (
@@ -12,6 +13,7 @@ export default function WorkShopGroupsPage() {
         <CreateGroupDialog />
       </div>
       <Separator />
+      <GroupTableView />
     </div>
   );
 }

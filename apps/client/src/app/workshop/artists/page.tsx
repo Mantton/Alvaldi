@@ -1,4 +1,5 @@
 import { Separator } from "@/components/ui/separator";
+import ArtistsTableView from "@/components/workshop/artists/ArtistsTable";
 import CreateArtistDialog from "@/components/workshop/artists/CreateArtistDialog";
 
 export default function WorkShopLabelsPage() {
@@ -13,7 +14,9 @@ export default function WorkShopLabelsPage() {
       </div>
       <Separator />
 
-      <div className="flex-1"></div>
+      <div className="flex-1">
+        <ArtistsTableView />
+      </div>
     </div>
   );
 }

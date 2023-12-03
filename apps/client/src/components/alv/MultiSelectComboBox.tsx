@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -21,27 +21,36 @@ import {
 type Identifiable = {
   id: number;
 };
-type Props = {
-  artists: any[];
-  selections: Set<number>;
-  setSelections: (v: Set<number>) => void;
+type Props<T extends Identifiable> = {
+  title: string;
+  items: T[];
+  onSelectionChanged: (selections: number[]) => void;
+  cell: (item: T) => React.ReactNode;
+  disabled?: boolean;
 };
-export function SelectArtistsComboBox<T extends Identifiable>({
-  artists,
-  selections,
-  setSelections: setSelection,
-}: Props) {
+
+export function MultiSelectComboBox<T extends Identifiable>({
+  title,
+  items,
+  onSelectionChanged,
+  cell,
+  disabled,
+}: Props<T>) {
   const [open, setOpen] = React.useState(false);
+  const [selections, setSelections] = React.useState<number[]>([]);
 
-  const addItem = (item: string) => {
-    setSelection(new Set([...selections, parseInt(item)]));
-    console.log(selections);
-  };
+  const toggleSelection = (item: string) => {
+    const id = parseInt(item);
+    let updated: number[];
+    if (selections.includes(id)) {
+      updated = selections.filter((v) => v !== id);
+    } else {
+      updated = [...selections, id];
+    }
 
-  const removeItem = (item: string) => {
-    const newSet = new Set(selections);
-    newSet.delete(parseInt(item));
-    setSelection(newSet);
+    onSelectionChanged(updated);
+    setSelections(updated);
+    setOpen(false);
   };
 
   return (
@@ -52,36 +61,31 @@ export function SelectArtistsComboBox<T extends Identifiable>({
           role="combobox"
           aria-expanded={open}
           className="block w-full  justify-between"
+          disabled={disabled}
         >
-          <p>Select Artists</p>
+          <p>Select {title}</p>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full min-w-[var(--radix-popover-trigger-width)] p-0">
         <Command>
-          <CommandInput placeholder="Search Artists..." />
+          <CommandInput placeholder={`Search ${title}...`} />
           <CommandEmpty>None found.</CommandEmpty>
           <CommandGroup>
-            {artists.map((item) => (
+            {items.map((item) => (
               <CommandItem
                 key={item.id}
                 value={item.id.toString()}
-                onSelect={(currentValue) => {
-                  selections.has(parseInt(currentValue))
-                    ? removeItem(currentValue)
-                    : addItem(currentValue);
-                }}
+                onSelect={toggleSelection}
                 className="h-12 w-full"
               >
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    selections.has(item.id) ? "opacity-100" : "opacity-0"
+                    selections.includes(item.id) ? "opacity-100" : "opacity-0"
                   )}
                 />
-                <div className="flex gap-2 items-center">
-                  <div className="h-8 w-8 bg-slate-200 rounded-full"></div>
-                  <p>{item.name}</p>
-                </div>
+
+                {cell(item)}
               </CommandItem>
             ))}
           </CommandGroup>
