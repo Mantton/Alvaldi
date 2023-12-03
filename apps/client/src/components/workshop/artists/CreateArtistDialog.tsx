@@ -8,22 +8,22 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
-import CreateGroupForm from "./CreateGroupForm";
+import CreateArtistForm from "./CreateArtistForm";
 
-export default function CreateGroupDialog() {
+export default function CreateArtistDialog() {
   const [isOpen, setIsOpen] = useState(false);
   const close = () => setIsOpen(false);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>Add Group</Button>
+        <Button>Add Artist</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Group</DialogTitle>
+          <DialogTitle>Add Artist</DialogTitle>
         </DialogHeader>
-        <CreateGroupForm close={close} />
+        <CreateArtistForm close={close} />
       </DialogContent>
     </Dialog>
   );
