@@ -1,3 +1,4 @@
+import cache from "@/clients/cache";
 import db from "@/clients/postgres";
 import { isProduction } from "@/config/env";
 import { runMigrations } from "@/db/migrate";
@@ -32,4 +33,6 @@ END $$;
 `;
   await db.execute(truncateCommand);
   await db.execute(resetSequencesCommand);
+  await cache.connect();
+  await cache.flush();
 }

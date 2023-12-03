@@ -23,6 +23,10 @@ class Cache {
     return this.client.disconnect();
   }
 
+  async flush() {
+    return this.client.flushAll();
+  }
+
   async get(key: string) {
     await this.connect();
     return this.client.get(key);
