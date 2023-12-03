@@ -1,10 +1,7 @@
 import { z } from "zod";
 import { CollectableRarity, PackGroup } from "../types";
-
-const SerialIDArraySchema = z
-  .array(z.number().int().nonnegative().min(1))
-  .nonempty()
-  .refine((nums) => Array.from(new Set(nums)));
+import { SerialIDArraySchema } from "./utils";
+export * from "./group";
 export const CreateRecordLabelRequestSchema = z.object({
   name: z
     .string()
@@ -23,14 +20,6 @@ export const CreateArtistRequestSchema = z.object({
   groups: SerialIDArraySchema.optional().optional(),
   icon: z.string().length(21).optional(),
   banner: z.string().length(21).optional(),
-});
-
-export const CreateGroupRequestSchema = z.object({
-  name: z.string().min(2), // TODO: stricter validation on this
-  label: z.number().int().nonnegative().min(1),
-  icon: z.string().length(21).optional(),
-  banner: z.string().length(21).optional(),
-  artists: SerialIDArraySchema.optional(),
 });
 
 export const CreateEraRequestSchema = z.object({
@@ -61,7 +50,6 @@ export const BuyPackRequestSchema = z.object({
   identifier: z.number().nonnegative().min(1),
 });
 
-export type CreateGroupRequest = z.infer<typeof CreateGroupRequestSchema>;
 export type CreateArtistRequest = z.infer<typeof CreateArtistRequestSchema>;
 export type CreateRecordLabelRequest = z.infer<
   typeof CreateRecordLabelRequestSchema

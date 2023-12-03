@@ -13,11 +13,21 @@ declare global {
     ReqBody,
     ReqParams = any,
     ReqQuery = any,
-    ResBody = any
+    ResBody = any,
   > extends RequestHandler<
       ReqParams & Record<string, never>,
       ResBody,
       ReqBody,
       ReqQuery & Record<string, never>
     > {}
+  interface GetRequestHandlerWithParam<ReqQuery, ReqParams>
+    extends RequestHandler<
+      ReqParams,
+      any,
+      any,
+      ReqQuery & Record<string, never>
+    > {}
+
+  interface GetRequestHandler<ReqQuery>
+    extends GetRequestHandlerWithParam<ReqQuery, any> {}
 }

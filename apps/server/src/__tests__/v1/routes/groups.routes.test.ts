@@ -4,8 +4,8 @@ import supertest from "supertest";
 import { createRecordLabel } from "@/v1/services/recordLabels.service";
 
 import { createArtistRecord } from "@/v1/services/artists.service";
-import { getGroupInfo } from "@/v1/services/groups.service";
-import { CreateGroupRequest } from "@alvaldi/common";
+import { createGroupRecord, getGroupInfo } from "@/v1/services/groups.service";
+import { BasicGroupInfo, CreateGroupRequest } from "@alvaldi/common";
 
 describe("Groups Routes", () => {
   beforeAll(async () => {
@@ -15,6 +15,34 @@ describe("Groups Routes", () => {
     await createArtistRecord({ stageName: "Rosé", label: 1 }, 1);
   });
 
+  describe("GET /v1/groups", () => {
+    it("should respond with 200 and list of 2 groups", async () => {
+      await createRecordLabel(1, "SM Entertainment"); // create label
+      await createArtistRecord({ stageName: "Karina", label: 2 }, 1);
+      await createArtistRecord({ stageName: "Winter", label: 2 }, 1);
+      await createArtistRecord({ stageName: "Giselle", label: 2 }, 1);
+      await createArtistRecord({ stageName: "NingNing", label: 2 }, 1);
+
+      await createGroupRecord(1, {
+        label: 1,
+        name: "Aespa",
+        artists: [3, 4, 5, 6],
+      });
+
+      await createGroupRecord(1, {
+        label: 1,
+        name: "BLACKPINK",
+        artists: [1, 2],
+      });
+
+      const { body }: { body: { data: BasicGroupInfo[] } } = await supertest(
+        app
+      )
+        .get("/v1/groups")
+        .expect(200);
+      expect(body.data.length).toBe(2);
+    });
+  });
   describe("PUT /v1/groups", () => {
     const data: CreateGroupRequest = {
       label: 1,

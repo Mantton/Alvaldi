@@ -1,8 +1,17 @@
 import { Router } from "express";
 import { RequiresAuth } from "../middlewares";
-import { BodyMatchesSchema } from "../middlewares/validation";
-import { CreateGroupRequestSchema } from "@alvaldi/common";
-import { handleCreateGroupRequest } from "../controllers/groups.controller";
+import {
+  BodyMatchesSchema,
+  QueryMatchesSchema,
+} from "../middlewares/validation";
+import {
+  CreateGroupRequestSchema,
+  GetAllGroupsRequestQueryParamsSchema,
+} from "@alvaldi/common";
+import {
+  handleCreateGroupRequest,
+  handleGetAllGroupsRequest,
+} from "../controllers/groups.controller";
 
 export const GroupsRouter = Router();
 
@@ -12,4 +21,9 @@ GroupsRouter.put(
   handleCreateGroupRequest
 );
 
+GroupsRouter.get(
+  "/",
+  [QueryMatchesSchema(GetAllGroupsRequestQueryParamsSchema)],
+  handleGetAllGroupsRequest
+);
 export default GroupsRouter;

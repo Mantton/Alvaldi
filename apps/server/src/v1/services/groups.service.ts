@@ -1,13 +1,13 @@
 import db from "@/clients/postgres";
 import { BadRequestError } from "@/errors";
-import type { CreateGroupRequest } from "@alvaldi/common";
+import type { BasicGroupInfo, CreateGroupRequest } from "@alvaldi/common";
 import { recordLabelExists } from "./recordLabels.service";
 import { consumeMediaToken } from "@/utils/media";
 import { groupsTable } from "@/db/schema/group";
 import { groupArtistsTable } from "@/db/schema/groupArtists";
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { recordLabelsTable } from "@/db/schema/recordLabels";
-import { alias } from "drizzle-orm/pg-core";
+import { PgSelectQueryBuilder, alias } from "drizzle-orm/pg-core";
 import { artistsTable } from "@/db/schema/artist";
 import { allArtistsExistsIn } from "./artists.service";
 import { mediaTable } from "@/db/schema/media";
@@ -125,4 +125,32 @@ export const getArtistsForGroupWithID = async (groupId: number) => {
     .where(eq(groupArtistsTable.groupId, groupId));
 
   return artists;
+};
+
+export const getAllGroups = async (
+  page = 1,
+  label?: number
+): Promise<BasicGroupInfo[]> => {
+  const limit = 25;
+  const offset = (Math.min(page - 1), 0) * 25;
+
+  let qb = db
+    .select({
+      id: groupsTable.id,
+      name: groupsTable.englishName,
+      iconImageUrl: iconsTable.url,
+      bannerImageUrl: bannersTable.url,
+    })
+    .from(groupsTable)
+    .leftJoin(iconsTable, eq(iconsTable.id, groupsTable.iconImageId))
+    .leftJoin(bannersTable, eq(bannersTable.id, groupsTable.bannerImageId))
+    .$dynamic();
+
+  if (label) {
+    qb = qb.where(eq(groupsTable.labelId, label));
+  }
+
+  qb = qb.limit(limit).offset(offset).orderBy(asc(groupsTable.englishName));
+
+  return await qb;
 };
