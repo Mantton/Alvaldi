@@ -1,5 +1,6 @@
 import CreateRecordLabelDialog from "@/components/workshop/label/CreateRecordLabelDialog";
-import RecordLabelTable from "@/components/workshop/label/RecordLabelTable";
+import RecordLabelTableView from "@/components/workshop/label/RecordLabelTable";
+import { Separator } from "@/components/ui/separator";
 
 export default function WorkShopLabelsPage() {
   return (
@@ -11,10 +12,10 @@ export default function WorkShopLabelsPage() {
 
         <CreateRecordLabelDialog />
       </div>
-      <hr />
+      <Separator />
 
       <div className="flex-1">
-        <RecordLabelTable />
+        <RecordLabelTableView />
       </div>
     </div>
   );
