@@ -41,7 +41,7 @@ export const handleGetRecordLabel: RequestHandler = async (req, res, next) => {
     //   throw new BadRequestError();
     // }
 
-    res.json(data);
+    res.status(200).json(data);
   } catch (error) {
     next(error);
   }

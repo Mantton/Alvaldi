@@ -1,7 +1,7 @@
-import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import "./globals.css";
 import NavBar from "@/components/alv/NavBar";
+import Providers from "@/components/alv/Providers";
 
 export const metadata: Metadata = {
   title: "Alvaldi - Trade Cards",
@@ -15,13 +15,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
+    <Providers>
       <html lang="en">
-        <body className="flex flex-col h-screen">
+        <body className="flex h-screen flex-col ">
           <NavBar />
-          <div className="flex-1 overflow-auto">{children}</div>
+          <div className="flex-1">{children}</div>
         </body>
       </html>
-    </ClerkProvider>
+    </Providers>
   );
 }

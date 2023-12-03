@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className=" mx-auto min-h-screen items-center justify-center  grid grid-cols-2">
+    <main className="h-full mx-auto items-center justify-center grid grid-cols-2">
       <div className="h-full flex items-center justify-center">
         <Image src="/9916512.jpg" width={400} height={400} alt="finger_heart" />
       </div>

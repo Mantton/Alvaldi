@@ -20,6 +20,8 @@ import { Input } from "@/components/ui/input";
 import { createNewRecordLabel } from "@/api";
 import ImageSelector from "@/components/alv/ImageSelector";
 import { uploadMedia } from "@/api/media";
+import { useQueryClient } from "@tanstack/react-query";
+
 // REFERENCE : https://ui.shadcn.com/docs/components/form
 
 type ComponentProps = {
@@ -33,6 +35,7 @@ export default function CreateRecordLabelForm({ close }: ComponentProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const iconImageReference = useRef<HTMLInputElement>(null);
   const bannerImageReference = useRef<HTMLInputElement>(null);
+  const queryClient = useQueryClient();
 
   // Define Form
   const form = useForm<CreateRecordLabelRequest>({
@@ -68,6 +71,7 @@ export default function CreateRecordLabelForm({ close }: ComponentProps) {
       };
       await createNewRecordLabel(request);
       close?.();
+      queryClient.invalidateQueries({ queryKey: ["workshop.getRecordLabels"] });
     } catch (error) {
       // TODO: Error Handling
       console.error(error);

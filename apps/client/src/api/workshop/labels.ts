@@ -3,15 +3,14 @@ import {
   CreateRecordLabelResponse,
   GetRecordLabelListResponse,
 } from "@alvaldi/common";
-import { buildV1Request } from "../config";
+import { buildV1Request, v1Client } from "../config";
 import axios from "axios";
 
 export const getWorkshopRecordLabelList = async (page: number = 1) => {
-  const path = "/labels" + new URLSearchParams({ page: page.toString() });
-  const url = buildV1Request(path);
-
-  const response = await fetch(url);
-  const data: GetRecordLabelListResponse = await response.json();
+  const path = "/labels";
+  const { data } = await v1Client.get<GetRecordLabelListResponse>(path, {
+    params: { page },
+  });
   return data;
 };
 
