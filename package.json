@@ -5,7 +5,8 @@
   "scripts": {
     "server": "pnpm --filter @alvaldi/server",
     "common": "pnpm --filter @alvaldi/common",
-    "client": "pnpm --filter @alvaldi/client"
+    "client": "pnpm --filter @alvaldi/client",
+    "proxy": "caddy run --config ./Caddyfile.dev"
   },
   "keywords": [],
   "author": "Mantton <mantton.official@gmail.com>",

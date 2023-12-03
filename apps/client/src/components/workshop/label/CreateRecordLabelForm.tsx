@@ -17,7 +17,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useAuth } from "@clerk/nextjs";
 import { createNewRecordLabel } from "@/api";
 import ImageSelector from "@/components/alv/ImageSelector";
 import { uploadMedia } from "@/api/media";
@@ -31,7 +30,6 @@ type ComponentProps = {
 };
 
 export default function CreateRecordLabelForm({ close }: ComponentProps) {
-  const { getToken } = useAuth();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const iconImageReference = useRef<HTMLInputElement>(null);
   const bannerImageReference = useRef<HTMLInputElement>(null);
@@ -46,16 +44,12 @@ export default function CreateRecordLabelForm({ close }: ComponentProps) {
     setIsLoading(true);
 
     try {
-      const token = await getToken();
-
-      if (!token) return;
-
       // Upload Icon Image
       let iconImageId: string | undefined;
       const iconImage = iconImageReference.current?.files?.[0];
       if (iconImage) {
         // TODO: File Size validation
-        iconImageId = await uploadMedia(iconImage, token);
+        iconImageId = await uploadMedia(iconImage);
       }
 
       // Upload Banner Image
@@ -63,7 +57,7 @@ export default function CreateRecordLabelForm({ close }: ComponentProps) {
       const bannerImage = bannerImageReference.current?.files?.[0];
       if (bannerImage) {
         // TODO: File Size validation
-        bannerImageId = await uploadMedia(bannerImage, token);
+        bannerImageId = await uploadMedia(bannerImage);
       }
 
       // Submit Request
@@ -72,7 +66,7 @@ export default function CreateRecordLabelForm({ close }: ComponentProps) {
         icon: iconImageId,
         banner: bannerImageId,
       };
-      await createNewRecordLabel(request, token);
+      await createNewRecordLabel(request);
       close?.();
     } catch (error) {
       // TODO: Error Handling

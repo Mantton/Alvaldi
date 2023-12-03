@@ -1,0 +1,9 @@
+http://:3200 {
+
+	handle_path /api/* {
+		reverse_proxy :3300
+	}
+
+	reverse_proxy :3000
+}
+
