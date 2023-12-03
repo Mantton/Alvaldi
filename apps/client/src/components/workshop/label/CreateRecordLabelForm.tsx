@@ -17,7 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { createNewRecordLabel } from "@/api";
+import { workShopCreateNewRecordLabel } from "@/api";
 import ImageSelector from "@/components/alv/ImageSelector";
 import { uploadMedia } from "@/api/media";
 import { useQueryClient } from "@tanstack/react-query";
@@ -69,7 +69,7 @@ export default function CreateRecordLabelForm({ close }: ComponentProps) {
         icon: iconImageId,
         banner: bannerImageId,
       };
-      await createNewRecordLabel(request);
+      await workShopCreateNewRecordLabel(request);
       close?.();
       queryClient.invalidateQueries({ queryKey: ["workshop.getRecordLabels"] });
     } catch (error) {

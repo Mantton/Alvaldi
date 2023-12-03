@@ -14,7 +14,9 @@ export const getWorkshopRecordLabelList = async (page: number = 1) => {
   return data;
 };
 
-export const createNewRecordLabel = async (body: CreateRecordLabelRequest) => {
+export const workShopCreateNewRecordLabel = async (
+  body: CreateRecordLabelRequest
+) => {
   const path = "/labels";
   const url = buildV1Request(path);
   const { data } = await axios.put<CreateRecordLabelResponse>(url, body, {
