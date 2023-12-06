@@ -18,7 +18,7 @@ export const workShopGetAllArtists = async (label?: number) => {
   const path = "/artists";
   const { data } = await v1Client.get<GenericGetListResponse<BasicArtistInfo>>(
     path,
-    { params: { label } }
+    { params: { label } },
   );
   return data.data;
 };

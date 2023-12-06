@@ -4,7 +4,7 @@ import GroupTableView from "@/components/workshop/group/GroupTable";
 
 export default function WorkShopGroupsPage() {
   return (
-    <div className="h-full container py-4 flex flex-col">
+    <div className="container flex h-full flex-col py-4">
       <div className="flex justify-between pb-2">
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
           Manage Groups

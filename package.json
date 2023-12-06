@@ -6,7 +6,7 @@
     "server": "pnpm --filter @alvaldi/server",
     "common": "pnpm --filter @alvaldi/common",
     "client": "pnpm --filter @alvaldi/client",
-    "proxy": "caddy run --config ./Caddyfile.dev",
+    "dev": "caddy run --config ./Caddyfile.dev",
     "preinstall": "npx only-allow pnpm"
   },
   "keywords": [],

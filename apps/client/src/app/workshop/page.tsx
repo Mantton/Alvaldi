@@ -27,15 +27,15 @@ const SECTIONS = [
 export default function AdminPage() {
   return (
     <>
-      <div className="grid grid-cols-2 p-4 gap-4 h-full">
+      <div className="grid h-full grid-cols-2 gap-4 p-4">
         {SECTIONS.map((obj, index) => {
           return (
             <Link
               href={`/workshop/${obj.slug}`}
               key={index}
-              className="bg-slate-50 h-full rounded-lg hover:border-slate-600 border-transparent border-4 transition-all"
+              className="h-full rounded-lg border-4 border-transparent bg-slate-50 transition-all hover:border-slate-600"
             >
-              <div className="h-full flex items-center justify-center">
+              <div className="flex h-full items-center justify-center">
                 <p className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
                   {obj.name}
                 </p>

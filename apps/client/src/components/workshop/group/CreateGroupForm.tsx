@@ -54,7 +54,7 @@ export default function CreateGroupForm({ close }: ComponentProps) {
   });
 
   const [artistSelections, setArtistSelections] = useState<Set<number>>(
-    new Set()
+    new Set(),
   );
 
   // Images
@@ -148,14 +148,14 @@ export default function CreateGroupForm({ close }: ComponentProps) {
                     recordLabels.data.map((label) => {
                       return (
                         <SelectItem value={label.id.toString()} key={label.id}>
-                          <div className="flex gap-2 items-center">
-                            <div className="h-8 w-8 rounded-full  bg-slate-200 relative">
+                          <div className="flex items-center gap-2">
+                            <div className="relative h-8 w-8  rounded-full bg-slate-200">
                               {label.iconImageUrl && (
                                 <Image
                                   src={label.iconImageUrl}
                                   alt="icon image"
                                   fill
-                                  className="object-fill rounded-full"
+                                  className="rounded-full object-fill"
                                 />
                               )}
                             </div>

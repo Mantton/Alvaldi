@@ -15,7 +15,7 @@ export const getWorkshopRecordLabelList = async (page: number = 1) => {
 };
 
 export const workShopCreateNewRecordLabel = async (
-  body: CreateRecordLabelRequest
+  body: CreateRecordLabelRequest,
 ) => {
   const path = "/labels";
   const url = buildV1Request(path);

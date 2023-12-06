@@ -149,14 +149,14 @@ export default function CreateArtistForm({ close }: ComponentProps) {
                     labelsQuery.data.data.map((label) => {
                       return (
                         <SelectItem value={label.id.toString()} key={label.id}>
-                          <div className="flex gap-2 items-center">
-                            <div className="h-8 w-8 rounded-full  bg-slate-200 relative">
+                          <div className="flex items-center gap-2">
+                            <div className="relative h-8 w-8  rounded-full bg-slate-200">
                               {label.iconImageUrl && (
                                 <Image
                                   src={label.iconImageUrl}
                                   alt="icon image"
                                   fill
-                                  className="object-fill rounded-full"
+                                  className="rounded-full object-fill"
                                 />
                               )}
                             </div>
@@ -185,14 +185,14 @@ export default function CreateArtistForm({ close }: ComponentProps) {
                   onSelectionChanged={field.onChange}
                   disabled={!artistsQuery.isFetched}
                   cell={(item) => (
-                    <div className="flex gap-2 items-center">
-                      <div className="h-8 w-8 rounded-full bg-slate-200 relative">
+                    <div className="flex items-center gap-2">
+                      <div className="relative h-8 w-8 rounded-full bg-slate-200">
                         {item.iconImageUrl && (
                           <Image
                             src={item.iconImageUrl}
                             alt="icon"
                             fill
-                            className="object-cover rounded-full"
+                            className="rounded-full object-cover"
                           />
                         )}
                       </div>
@@ -202,22 +202,22 @@ export default function CreateArtistForm({ close }: ComponentProps) {
                 />
               </FormControl>
 
-              <div className="flex flex-wrap gap-4 items-center">
+              <div className="flex flex-wrap items-center gap-4">
                 {(artistsQuery.data ?? [])
                   .filter((v) => form.getValues("groups")?.includes(v.id))
                   .map((item) => {
                     return (
                       <div
                         key={item.id}
-                        className="flex flex-col gap-1 items-center justify-center w-24 h-24"
+                        className="flex h-24 w-24 flex-col items-center justify-center gap-1"
                       >
-                        <div className="h-12 w-12 relative rounded-full bg-slate-200">
+                        <div className="relative h-12 w-12 rounded-full bg-slate-200">
                           {item.iconImageUrl && (
                             <Image
                               src={item.iconImageUrl}
                               alt="icon"
                               fill
-                              className="object-cover rounded-full"
+                              className="rounded-full object-cover"
                             />
                           )}
                         </div>

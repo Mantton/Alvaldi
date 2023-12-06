@@ -81,7 +81,7 @@ export function MultiSelectComboBox<T extends Identifiable>({
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    selections.includes(item.id) ? "opacity-100" : "opacity-0"
+                    selections.includes(item.id) ? "opacity-100" : "opacity-0",
                   )}
                 />
 

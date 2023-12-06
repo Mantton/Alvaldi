@@ -24,7 +24,7 @@ export default function RecordLabelTableView() {
 
   if (isPending)
     return (
-      <div className="h-full flex items-center justify-center">
+      <div className="flex h-full items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin" />{" "}
       </div>
     );
@@ -59,19 +59,19 @@ function TableViewCell({ data }: { data: BasicRecordLabel }) {
   return (
     <TableRow>
       <TableCell colSpan={1} className="w-[100px]">
-        <div className="bg-slate-100 h-12 w-12 rounded-full relative">
+        <div className="relative h-12 w-12 rounded-full bg-slate-100">
           {data.iconImageUrl && (
             <Image
               src={data.iconImageUrl}
               alt="icon"
               fill
-              className="object-cover rounded-full"
+              className="rounded-full object-cover"
             />
           )}
         </div>
       </TableCell>
       <TableCell className="text-lg font-bold">{data.name}</TableCell>
-      <TableCell className="text-right w-[50px]">
+      <TableCell className="w-[50px] text-right">
         <RecordLabelTableViewCellMenu id={data.id} />
       </TableCell>
     </TableRow>

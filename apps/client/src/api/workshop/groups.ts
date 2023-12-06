@@ -16,7 +16,7 @@ export const workShopGetAllGroups = async (label?: number) => {
   const path = "/groups";
   const { data } = await v1Client.get<GenericGetListResponse<BasicGroupInfo>>(
     path,
-    { params: { label } }
+    { params: { label } },
   );
   return data.data;
 };
